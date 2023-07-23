@@ -386,6 +386,7 @@
 "Assets/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/Vortex.cs"
 "Assets/Scripts/CameraFollow.cs"
 "Assets/Scripts/PlayerMovenent.cs"
+"Assets/Scripts/SliderValue.cs"
 -langversion:9.0
 
 /deterministic

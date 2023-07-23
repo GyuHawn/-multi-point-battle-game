@@ -42,13 +42,19 @@ public class PlayerMovenent : MonoBehaviour
         // 자신의 캐릭터(네트워크 객체)일 경우에만 실행
         Move();
         Turn();
+
+        if (Input.GetKey(KeyCode.F))
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y - 0.45f, transform.position.z);
+        }
     }
 
 
-    void Move() 
+    void Move()
     {
         Vector3 cameraForward = camera.transform.forward; // 앞뒤
         Vector3 cameraRight = camera.transform.right; // 양옆
+
         cameraForward.y = 0.0f;
         cameraRight.y = 0.0f;
 
@@ -59,11 +65,15 @@ public class PlayerMovenent : MonoBehaviour
         // 캐릭터 이동 처리
         controller.SimpleMove(moveDir * moveSpeed);
 
+        // 플레이어의 y위치를 계속해서 감소시킵니다.
+        //transform.position = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
+
         // 캐릭터 애니메이션 처리
         float forward = Vector3.Dot(moveDir, transform.forward);
         float strafe = Vector3.Dot(moveDir, transform.right);
-        animator.SetBool("Move", true); 
+        animator.SetBool("Move", true);
     }
+
 
     void Turn()
     {

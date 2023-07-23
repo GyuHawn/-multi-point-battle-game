@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638256140725578005
-    m_Hash: 4091467262
+      ticks: 638257096596842356
+    m_Hash: 1925464042
   m_LockFileStatus:
     m_FilePath: C:/Users/llll/Desktop/multi-point-battle-game/multi-point-battle-game/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638256140725627870
-    m_Hash: 1989195731
+      ticks: 638257096596852327
+    m_Hash: 2645256976
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
