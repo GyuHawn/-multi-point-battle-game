@@ -53,9 +53,28 @@ public class SliderValue : MonoBehaviour
             // PointGauge 오브젝트의 위치값을 원래대로 변경합니다.
             PointGauge.transform.position = pointGaugeOriginalPosition;
 
-            // 타겟이 사라졌을 때 PointRed 프리팹을 생성합니다.
-            GameObject pointRedObject = Instantiate(pointRedPrefab) as GameObject;
-            pointRedObject.transform.position = transform.position;
+            if (currentValue >= maxValue) // maxValue에 도달했다면
+            {
+                // PointGauge 오브젝트의 위치값을 변경합니다.
+                PointGauge.transform.position = new Vector3(PointGauge.transform.position.x, 2200, PointGauge.transform.position.z);
+
+                string targetObjectName = gameObject.tag;
+                GameObject[] objectsToDestroy = GameObject.FindObjectsOfType<GameObject>();
+
+                foreach (GameObject objectToDestroy in objectsToDestroy)
+                {
+                    if (objectToDestroy.name.Contains(targetObjectName))
+                    {
+                        Debug.Log(objectToDestroy.name + " 삭제");
+                        Destroy(objectToDestroy);
+                    }
+                }
+
+                // 타겟이 사라졌을 때 PointRed 프리팹을 생성합니다.
+                GameObject pointRedObject = Instantiate(pointRedPrefab) as GameObject;
+                pointRedObject.transform.tag = "Red"; //"Red" 태그로 변경합니다.
+                pointRedObject.transform.position = transform.position;
+            }
         }
     }
 
@@ -71,7 +90,7 @@ public class SliderValue : MonoBehaviour
             if (currentValue >= maxValue) // maxValue에 도달했다면
             {
                 // PointGauge 오브젝트의 위치값을 변경합니다.
-                PointGauge.transform.position = new Vector3(PointGauge.transform.position.x, 1000, PointGauge.transform.position.z);
+                PointGauge.transform.position = new Vector3(PointGauge.transform.position.x, 2200, PointGauge.transform.position.z);
 
                 string targetObjectName = gameObject.tag;
                 GameObject[] objectsToDestroy = GameObject.FindObjectsOfType<GameObject>();

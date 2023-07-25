@@ -20,9 +20,6 @@ public class PlayerMovenent : MonoBehaviour
     // 이동속도
     public float moveSpeed = 10.0f;
 
-    // 카메라를 위한 변수 생성
-   // private CinemachineVirtualCamera virtualCamera;
-
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -93,5 +90,17 @@ public class PlayerMovenent : MonoBehaviour
 
         // 캐릭터의 회전값 지정
         transform.localRotation = Quaternion.LookRotation(lookDir);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("RedRespwan"))
+        {
+            transform.position = new Vector3(-76, 1.1f, 40);
+        }
+        else if (collision.gameObject.CompareTag("BlueRespwan"))
+        {
+            transform.position = new Vector3(102, 1.1f, -60);
+        }
     }
 }

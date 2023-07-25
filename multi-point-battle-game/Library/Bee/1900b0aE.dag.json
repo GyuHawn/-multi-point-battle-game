@@ -13641,7 +13641,7 @@
         "Assets/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/Twirl.cs",
         "Assets/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/VignetteAndChromaticAberration.cs",
         "Assets/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/Vortex.cs",
-        "Assets/Scripts/CameraFollow.cs",
+        "Assets/Scripts/FollowCamera.cs",
         "Assets/Scripts/PlayerMovenent.cs",
         "Assets/Scripts/SliderValue.cs",
         "C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll",
