@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class PlayerMovenent : MonoBehaviour
 {
+    Bullet bullet;
+
+    public int health = 100;
+    public int currenthealth = 100;
+
+    public GameObject FirePosition;
     private CharacterController controller;
     private new Transform transform;
     private Animator animator;
     private new Camera camera;
-
+    
     // 가상의 Plane에 레이캐스팅하기 위한 변수
     private Plane plane;// 지정한 지역에 가상의 바닥을 생성하기 위한 Plane 구조체
     private Ray ray; // 광선
@@ -26,6 +32,7 @@ public class PlayerMovenent : MonoBehaviour
         transform = GetComponent<Transform>();
         animator = GetComponent<Animator>();
         camera = Camera.main;
+        bullet = GetComponent<Bullet>();
     }
 
     void Start()
@@ -43,6 +50,12 @@ public class PlayerMovenent : MonoBehaviour
         if (Input.GetKey(KeyCode.F))
         {
             transform.position = new Vector3(transform.position.x, transform.position.y - 0.45f, transform.position.z);
+        }
+        if (currenthealth <= 0)
+        {
+            Debug.Log("사망");
+            transform.position = new Vector3(-70, 1.1f, 50);
+            currenthealth = health;
         }
     }
 
@@ -94,13 +107,11 @@ public class PlayerMovenent : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("RedRespwan"))
+        if (collision.gameObject.CompareTag("Bullte"))
         {
-            transform.position = new Vector3(-76, 1.1f, 40);
-        }
-        else if (collision.gameObject.CompareTag("BlueRespwan"))
-        {
-            transform.position = new Vector3(102, 1.1f, -60);
+            Debug.Log("공격");
+           // currenthealth = currenthealth - bullet.damage;
+            currenthealth -= 100;                
         }
     }
 }

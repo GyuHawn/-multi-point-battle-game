@@ -9,6 +9,8 @@ TagManager:
   - Bule
   - RedRespwan
   - BlueRespwan
+  - Wall
+  - Bullte
   layers:
   - Default
   - TransparentFX
