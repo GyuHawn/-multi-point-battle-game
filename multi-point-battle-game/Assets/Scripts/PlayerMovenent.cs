@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class PlayerMovenent : MonoBehaviour
 {
-    Bullet bullet;
-
     public int health = 100;
     public int currenthealth = 100;
 
-    public GameObject FirePosition;
     private CharacterController controller;
     private new Transform transform;
     private Animator animator;
@@ -32,7 +29,6 @@ public class PlayerMovenent : MonoBehaviour
         transform = GetComponent<Transform>();
         animator = GetComponent<Animator>();
         camera = Camera.main;
-        bullet = GetComponent<Bullet>();
     }
 
     void Start()
@@ -109,9 +105,12 @@ public class PlayerMovenent : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullte"))
         {
-            Debug.Log("공격");
-           // currenthealth = currenthealth - bullet.damage;
-            currenthealth -= 100;                
+            Debug.Log("피격");
+
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+
+            currenthealth -= bullet.damage;
+            Debug.Log("현재 체력 : " + currenthealth);
         }
     }
 }

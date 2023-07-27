@@ -385,6 +385,7 @@
 "Assets/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/VignetteAndChromaticAberration.cs"
 "Assets/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/Vortex.cs"
 "Assets/Scripts/Bullet.cs"
+"Assets/Scripts/Cube.cs"
 "Assets/Scripts/FollowCamera.cs"
 "Assets/Scripts/PlayerFire.cs"
 "Assets/Scripts/PlayerMovenent.cs"
