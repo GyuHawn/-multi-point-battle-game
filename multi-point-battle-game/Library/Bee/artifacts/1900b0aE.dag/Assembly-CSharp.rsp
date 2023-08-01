@@ -417,6 +417,7 @@
 "Assets/Scripts/Bullet.cs"
 "Assets/Scripts/Cube.cs"
 "Assets/Scripts/FollowCamera.cs"
+"Assets/Scripts/LobbyManager.cs"
 "Assets/Scripts/MyGizmo.cs"
 "Assets/Scripts/PhotonManager.cs"
 "Assets/Scripts/PlayerFire.cs"
