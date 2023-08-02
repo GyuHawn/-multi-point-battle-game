@@ -182,7 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNameInputField: {fileID: 431309161}
   roomNameInputField: {fileID: 57221669}
-  joinRoomButton: {fileID: 787706954}
+  joinButton: {fileID: 787706954}
 --- !u!1 &57221667
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,37 +647,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 128857344}
   m_CullTransparentMesh: 1
---- !u!1 &294601350
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 294601351}
-  m_Layer: 0
-  m_Name: "0802\uB85C\uBE44 \uBC84\uD2BC \uC628\uD074\uB9AD\uD655\uC778"
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &294601351
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294601350}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 722.1776, y: 255.10683, z: 289.84995}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &431309159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,7 +1235,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 41722672}
         m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
-        m_MethodName: OnJoinedRoom
+        m_MethodName: Connect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2243,4 +2212,3 @@ SceneRoots:
   - {fileID: 2052661576}
   - {fileID: 482197975}
   - {fileID: 41722671}
-  - {fileID: 294601351}
