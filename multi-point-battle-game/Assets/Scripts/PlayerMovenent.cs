@@ -6,7 +6,7 @@ using Photon.Realtime;
 using Photon.Pun;
 using Cinemachine;
 
-public class PlayerMovenent : MonoBehaviour
+public class PlayerMovenent : MonoBehaviourPunCallbacks
 {
     public int health = 100;
     public int currenthealth = 100;
