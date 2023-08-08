@@ -147,8 +147,8 @@ public class Weapon : MonoBehaviourPunCallbacks
 
         //bloom
         Vector3 t_bloom = t_spawn.position + t_spawn.forward * 1000f;
-            t_bloom += Random.Range(-loadout[currentIndex].bloom, loadout[currentIndex].bloom) * t_spawn.up;
-            t_bloom += Random.Range(-loadout[currentIndex].bloom, loadout[currentIndex].bloom) * t_spawn.right;
+            t_bloom += Random.Range(-loadout[currentIndex].spread, loadout[currentIndex].spread) * t_spawn.up;
+            t_bloom += Random.Range(-loadout[currentIndex].spread, loadout[currentIndex].spread) * t_spawn.right;
             t_bloom -= t_spawn.position;
             t_bloom.Normalize();
 
@@ -176,8 +176,8 @@ public class Weapon : MonoBehaviourPunCallbacks
         }
 
         // gun fx
-        currentWeapon.transform.Rotate(-loadout[currentIndex].recoil,0,0);
-        currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[currentIndex].kickback;
+        currentWeapon.transform.Rotate(-loadout[currentIndex].recoil,0,0); // 무기의 회전값 지정
+        currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[currentIndex].rebound; // 무기 반동값 지정
 
        
     }

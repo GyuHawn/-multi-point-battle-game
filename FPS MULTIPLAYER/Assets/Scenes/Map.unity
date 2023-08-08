@@ -1959,8 +1959,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f0203739888ff4da538b9aeb236df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player_prefab: Player
-  spawn_points:
+  playerPrefab: Player
+  spawnPoints:
   - {fileID: 1747942626}
   - {fileID: 1371825115}
   - {fileID: 500503717}
