@@ -1038,7 +1038,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 603737852}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 983126146}
+        m_TargetAssemblyTypeName: Launcher, Assembly-CSharp
+        m_MethodName: OnClickCreateRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &603737852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1128,7 +1140,7 @@ GameObject:
   - component: {fileID: 783567014}
   - component: {fileID: 783567013}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: JoinInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1582,6 +1594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd4947eb0df2ce45ae6c0bc81fce673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  createInput: {fileID: 1456422660}
 --- !u!4 &983126147
 Transform:
   m_ObjectHideFlags: 0
@@ -1610,6 +1623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launcher: {fileID: 983126146}
+  createInput: {fileID: 1456422660}
 --- !u!1 &1041481608
 GameObject:
   m_ObjectHideFlags: 0
@@ -2341,7 +2355,7 @@ GameObject:
   - component: {fileID: 1456422661}
   - component: {fileID: 1456422660}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: CreateInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

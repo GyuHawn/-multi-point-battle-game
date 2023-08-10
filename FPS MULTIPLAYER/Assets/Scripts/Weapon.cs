@@ -171,8 +171,7 @@ public class Weapon : MonoBehaviourPunCallbacks
 
     [PunRPC]
     private void TakeDamage(int p_damage) // 다른 플레이어 데미지 
-    {
-        
+    {     
         GetComponent<Player>().TakeDamage(p_damage); // 플레이어 체력 감소
     }
 
