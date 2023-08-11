@@ -124,7 +124,7 @@
 -define:PUN_2_19_OR_NEWER
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
--r:"Assets/Photon/PhotonLibs/Photon3Unity3D.dll"
+-r:"Assets/Photon/PhotonLibs/netstandard2.0/Photon3Unity3D.dll"
 -r:"Assets/Photon/PhotonLibs/WebSocket/websocket-sharp.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/Managed/UnityEditor.Graphs.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll"
@@ -348,6 +348,8 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Photon/PhotonUnityNetworking/Code/CustomTypes.cs"
 "Assets/Photon/PhotonUnityNetworking/Code/Enums.cs"
+"Assets/Photon/PhotonUnityNetworking/Code/Interfaces/IPhotonViewCallbacks.cs"
+"Assets/Photon/PhotonUnityNetworking/Code/Interfaces/IPunCallbacks.cs"
 "Assets/Photon/PhotonUnityNetworking/Code/PhotonHandler.cs"
 "Assets/Photon/PhotonUnityNetworking/Code/PhotonNetwork.cs"
 "Assets/Photon/PhotonUnityNetworking/Code/PhotonNetworkPart.cs"

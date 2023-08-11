@@ -61,8 +61,12 @@
     <Compile Include="Assets\Photon\PhotonRealtime\Code\LoadbalancingPeer.cs" />
     <Compile Include="Assets\Photon\PhotonRealtime\Code\RoomInfo.cs" />
     <Compile Include="Assets\Photon\PhotonRealtime\Code\FriendInfo.cs" />
+    <Compile Include="Assets\Photon\PhotonRealtime\Code\Unity\Editor\AccountService.cs" />
     <Compile Include="Assets\Photon\PhotonRealtime\Code\SupportLogger.cs" />
+    <Compile Include="Assets\Photon\PhotonRealtime\Code\Unity\PhotonAppSettings.cs" />
+    <Compile Include="Assets\Photon\PhotonRealtime\Code\Unity\Editor\PhotonEditorUtils.cs" />
     <Compile Include="Assets\Photon\PhotonRealtime\Code\ConnectionHandler.cs" />
+    <Compile Include="Assets\Photon\PhotonRealtime\Code\CustomTypesUnity.cs" />
     <Compile Include="Assets\Photon\PhotonRealtime\Code\Extensions.cs" />
     <Compile Include="Assets\Photon\PhotonRealtime\Code\AppSettings.cs" />
     <Compile Include="Assets\Photon\PhotonRealtime\Code\PhotonPingClasses.cs" />
@@ -350,7 +354,7 @@
       <HintPath>Library\PackageCache\com.unity.collab-proxy@2.0.5\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>Assets\Photon\PhotonLibs\Photon3Unity3D.dll</HintPath>
+      <HintPath>Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="unityplastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@2.0.5\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
@@ -738,10 +742,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="PhotonWebSocket.csproj">
-      <Project>{0DCD2EE2-0C38-5985-A9D0-7A125F517CD3}</Project>
-      <Name>PhotonWebSocket</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

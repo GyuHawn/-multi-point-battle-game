@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AppSettings:
     AppIdRealtime: b0d27818-b299-4c37-a465-1341bf74936f
+    AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 
     AppVersion: 
@@ -27,8 +28,8 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: \
-  PunLogging: 2
+  DevRegion: kr
+  PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
@@ -39,9 +40,9 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - Equip
+  - SetCrouch
   - Shoot
   - TakeDamage
-  - SetCrouch
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0
   DevRegionSetOnce: 1

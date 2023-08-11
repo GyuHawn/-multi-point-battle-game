@@ -141,9 +141,9 @@ namespace Photon.Pun.Demo.PunBasics
 
 		#region Public Methods
 
-		public void LeaveRoom()
+		public bool LeaveRoom()
 		{
-			PhotonNetwork.LeaveRoom();
+			return PhotonNetwork.LeaveRoom();
 		}
 
 		public void QuitApplication()
@@ -160,6 +160,7 @@ namespace Photon.Pun.Demo.PunBasics
 			if ( ! PhotonNetwork.IsMasterClient )
 			{
 				Debug.LogError( "PhotonNetwork : Trying to Load a level but we are not the master Client" );
+				return;
 			}
 
 			Debug.LogFormat( "PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount );
