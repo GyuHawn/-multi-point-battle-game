@@ -494,13 +494,13 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 0
   Synchronization: 2
   OwnershipTransfer: 0
+  observableSearch: 0
   ObservedComponents:
   - {fileID: 4287470550478689870}
   - {fileID: 3682673690337617554}
-  viewIdField: 0
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &4287470550478689870
@@ -518,6 +518,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+  m_UseLocal: 0
 --- !u!1 &3682673691090698624
 GameObject:
   m_ObjectHideFlags: 0

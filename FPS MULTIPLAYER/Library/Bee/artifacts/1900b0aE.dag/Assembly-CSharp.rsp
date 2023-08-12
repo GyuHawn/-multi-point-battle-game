@@ -376,10 +376,11 @@
 "Assets/Photon/PhotonRealtime/Demos/DemoLoadBalancing/ConnectAndJoinRandomLb.cs"
 "Assets/Scripts/Launcher.cs"
 "Assets/Scripts/Look.cs"
-"Assets/Scripts/MainMenu.cs"
 "Assets/Scripts/Manager.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/SceneLoader.cs"
 "Assets/Scripts/ScriptableObjectsGen/Gun.cs"
+"Assets/Scripts/ServerConnect.cs"
 "Assets/Scripts/Sway.cs"
 "Assets/Scripts/Weapon.cs"
 -langversion:9.0

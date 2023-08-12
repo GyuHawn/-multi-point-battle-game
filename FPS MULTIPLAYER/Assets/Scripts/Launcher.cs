@@ -1,143 +1,83 @@
-﻿using Photon.Pun;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
     public TMP_InputField createInput;
     public TMP_InputField joinInput;
+    public TMP_InputField playerName;
 
-    public string joinRoomName;
-    public string createRoomName;
+    private bool isReady = false;
 
-    private void Awake()
+    private void Start()
     {
-        PhotonNetwork.AutomaticallySyncScene = true;
-        Connect();
+        playerName.characterLimit = 10;
+        createInput.characterLimit = 10;
+
+        // 서버 연결 시도
+        PhotonNetwork.Disconnect(); // 먼저 연결을 끊고
+        PhotonNetwork.ConnectUsingSettings(); // 다시 연결을 시도합니다.
+    }
+
+    public void CreateRoom()
+    {
+        if(isReady)
+        {
+            RoomOptions options = new RoomOptions();
+            options.MaxPlayers = 5;
+            PhotonNetwork.CreateRoom(createInput.text, options);
+        }
+        else
+        {
+            Debug.Log("방을 만들 준비가 되지 않았습니다.");
+        }
+    }
+
+    public void JoinRoom()
+    {
+        if(isReady)
+        {
+            PhotonNetwork.JoinRoom(joinInput.text);
+        }
+        else
+        {
+            Debug.Log("입장할 방이 없습니다");
+        }
+    }
+
+    public override void OnJoinedRoom()
+    {
+        PhotonNetwork.LoadLevel("Map");
+        if (playerName.text != "") 
+        {
+            PhotonNetwork.NickName = playerName.text;
+        }
+        else
+        {
+            PhotonNetwork.NickName = "Player " + Random.Range(0, 100);
+        }
     }
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("마스터 서버 연결 성공!");
-        base.OnConnectedToMaster();
-    }
-
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        CreateRoom(createInput.text);
-    }
-
-    private void Connect()
-    {
-        PhotonNetwork.GameVersion = "0.0.0";
-        PhotonNetwork.ConnectUsingSettings();
-    }
-
-    public void JoinRandom()
-    {
-        PhotonNetwork.JoinRandomRoom();
-    }
-
-    public void CreateRoom(string roomName)
-    {
-        if (string.IsNullOrEmpty(roomName))
+        if(!PhotonNetwork.InLobby)
         {
-            Debug.LogWarning("방 이름을 입력하세요");
-            return;
-        }
-
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 4;
-
-        PhotonNetwork.CreateRoom(roomName, options, TypedLobby.Default);
-    }
-
-    private void StartGame()
-    {
-        PhotonNetwork.LoadLevel(1);
-    }
-
-    public void OnClickCreateRoom()
-    {
-        createRoomName = createInput.text;
-
-        if (string.IsNullOrEmpty(createRoomName))
-        {
-            Debug.LogWarning("만드려는 방의 이름을 입력하세요");
-            return;
-        }
-
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 4;
-
-        if (!PhotonNetwork.IsConnected)
-        {
-            Debug.LogWarning("마스터 서버에 연결 중... 잠시만 기다려주세요...");
-            return;
-        }
-
-        PhotonNetwork.CreateRoom(createRoomName, options, TypedLobby.Default);
-    }
-
-    public void OnClickJoinRoom()
-    {
-        string joinRoomName = joinInput.text;
-        if (string.IsNullOrEmpty(joinRoomName))
-        {
-            Debug.LogWarning("입장하려는 방의 이름을 입력하세요");
-            return;
-        }
-
-        if (!PhotonNetwork.IsConnected)
-        {
-            PhotonNetwork.ConnectUsingSettings(); // Photon Server에 연결
-            return;
-        }
-
-        if (PhotonNetwork.InLobby) // 로비에 들어왔는지 확인
-        {
-            RoomInfo[] roomList = PhotonNetwork.GetRoomList(); // 모든 방의 정보를 가져옴
-            foreach (RoomInfo roomInfo in roomList)
-            {
-                if (roomInfo.Name == joinRoomName)
-                { // joinInput에 입력한 이름과 같은 방이 있을 경우
-                    PhotonNetwork.JoinRoom(joinRoomName); // 해당 방에 입장
-                    return;
-                }
-            }
-            Debug.LogWarning("입력한 이름의 방이 존재하지 않습니다"); // 해당 이름을 가진 방이 없을 경우
-        }
-        else
-        {
-            Debug.LogWarning("로비에 입장한 후에 방에 입장할 수 있습니다"); // 로비에 입장하지 않았을 경우
+            PhotonNetwork.JoinLobby();
         }
     }
 
-
-
-    private IEnumerator WaitForJoin(string roomName)
+    public override void OnJoinedLobby()
     {
-        while (!PhotonNetwork.InRoom)
-        {
-            yield return null;
-        }
-
-        while (!PhotonNetwork.IsMasterClient)
-        {
-            yield return null;
-        }
-
-        PhotonNetwork.LoadLevel(1);
+        isReady = true;
     }
 
-
-    public override void OnJoinedRoom()
+    public override void OnLeftLobby()
     {
-        base.OnJoinedRoom();
-        StartGame();
+        isReady = false;
     }
+
 }
