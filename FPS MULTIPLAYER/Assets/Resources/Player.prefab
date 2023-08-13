@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769a0a9d171febf4bae5ebf22a2e053d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 400
+  speed: 600
   sprintModifier: 2
   jumpForce: 400
   max_health: 1000
@@ -456,6 +456,8 @@ MonoBehaviour:
   standingCollider: {fileID: 2388045414927557528}
   crouchingCollider: {fileID: 5775036250584529805}
   normalCam: {fileID: 3682673690010844787}
+  current_health: 0
+  manager: {fileID: 0}
   weaponParentCurrentPos: {x: 0, y: 0, z: 0}
 --- !u!114 &3682673690337617581
 MonoBehaviour:

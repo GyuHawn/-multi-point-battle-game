@@ -15,7 +15,14 @@ public class Weapon : MonoBehaviourPunCallbacks
     private float shotDelay; // 발사 딜레이
     private bool isReloading; // 재장전
     public bool isAiming = false; // 조준중인지
-       
+
+    private GameObject gManager;
+
+    private void Awake()
+    {
+        gManager = GameObject.Find("Manager");
+    }
+
     void Start()
     {
         foreach (Gun a in loadout) a.Initialize(); // 배열의 각 총 초기화
@@ -171,8 +178,18 @@ public class Weapon : MonoBehaviourPunCallbacks
 
     [PunRPC]
     private void TakeDamage(int p_damage) // 다른 플레이어 데미지 
-    {     
-        GetComponent<Player>().TakeDamage(p_damage); // 플레이어 체력 감소
+    {
+        // GameManager 컴포넌트 찾기
+        GameManager gameManager = GetComponent<GameManager>();
+        if (gameManager != null)
+        {
+            gameManager.TakeDamage(p_damage); // 플레이어 체력 감소
+            Debug.Log("o");
+        }
+        else
+        {
+            Debug.Log("x");
+        }
     }
 
 
