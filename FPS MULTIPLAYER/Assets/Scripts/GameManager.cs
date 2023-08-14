@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    private Player player;
+    private PlayerMovement player;
+    public Text p_text;
 
     void Start()
     {
-        player = GetComponent<Player>();
+        player = GetComponent<PlayerMovement>();
     }
 
     [PunRPC]

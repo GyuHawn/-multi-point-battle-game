@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -10,6 +11,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     public TMP_InputField createInput;
     public TMP_InputField joinInput;
     public TMP_InputField playerName;
+    public Text RoomList;
+    private List<RoomInfo> roomInfos = new List<RoomInfo>();
 
     private bool isReady = false;
 
@@ -78,6 +81,23 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftLobby()
     {
         isReady = false;
+        RoomList.text = "";
+        roomInfos.Clear();
     }
 
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        roomInfos = roomList;
+        RefreshRoomList();
+    }
+
+    private void RefreshRoomList()
+    {
+        string roomString = "";
+        for (int i = 0; i < roomInfos.Count; i++) // List 사용
+        {
+            roomString +=  i+1 + " : " + roomInfos[i].Name + " [ " + roomInfos[i].PlayerCount + " / " + roomInfos[i].MaxPlayers + " ]" + "\n";
+        }
+        RoomList.text = roomString;
+    }
 }

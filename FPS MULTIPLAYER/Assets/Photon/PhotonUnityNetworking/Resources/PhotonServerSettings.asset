@@ -44,6 +44,7 @@ MonoBehaviour:
   - Shoot
   - TakeDamage
   - RefreshHealthBar
+  - RPC_AddMessage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
