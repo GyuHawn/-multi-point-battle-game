@@ -381,6 +381,7 @@
 "Assets/Scripts/Manager.cs"
 "Assets/Scripts/PlayerMovement.cs"
 "Assets/Scripts/ScriptableObjectsGen/Gun.cs"
+"Assets/Scripts/SelectChar.cs"
 "Assets/Scripts/ServerConnect.cs"
 "Assets/Scripts/Sway.cs"
 "Assets/Scripts/Weapon.cs"
