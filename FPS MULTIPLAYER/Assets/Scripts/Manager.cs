@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 
 public class Manager : MonoBehaviourPunCallbacks
 {
-    public GameObject[] playerPrefabs; // 플레이어
-    public Transform[] spawnPoints; // 스폰위치
+    public GameObject[] playerPrefabs;
+    public Transform[] spawnPoints;
 
     private SelectChar select;
 
@@ -16,15 +16,23 @@ public class Manager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnectedAndReady)
         {
-            LoadTNum();
-            Spawn();
+            select = FindObjectOfType<SelectChar>();
+            if (select != null)
+            {
+                LoadTNum();
+                Spawn();
+            }
         }
     }
 
     void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
-        LoadTNum(); // PlayerPrefs에서 값을 읽어옴
+    }
+
+    void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
     }
 
     public override void OnJoinedRoom()
@@ -34,8 +42,9 @@ public class Manager : MonoBehaviourPunCallbacks
 
     void LoadTNum()
     {
-        select.tNum = PlayerPrefs.GetInt("tNum", 1); // PlayerPrefs에서 값을 읽어옴, 저장된 값이 없으면 1을 기본값으로 사용
+        select.tNum = PlayerPrefs.GetInt("tNum", 1);
     }
+
 
     public void Spawn()
     {
