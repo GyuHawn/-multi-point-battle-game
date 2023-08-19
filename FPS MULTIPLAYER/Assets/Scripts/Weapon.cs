@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
+using Photon.Pun.Demo.PunBasics;
+using Photon.Realtime;
 
 public class Weapon : MonoBehaviourPunCallbacks
 {
@@ -16,11 +18,13 @@ public class Weapon : MonoBehaviourPunCallbacks
     private bool isReloading; // 재장전
     public bool isAiming = false; // 조준중인지
 
-    private GameObject gManager;
+    private PDamage pDamage;
+    private PlayerMovement playerMove;
 
     private void Awake()
     {
-        gManager = GameObject.Find("Manager");
+        pDamage = FindObjectOfType<PDamage>();
+        playerMove = FindObjectOfType<PlayerMovement>();
     }
 
     void Start()
@@ -115,6 +119,12 @@ public class Weapon : MonoBehaviourPunCallbacks
 
         currentWeapon = t_newWeapon; // 현재의 총 상태를 새로운 총으로 변경
 
+        if(playerMove.current_health <= 0)
+        {
+            if (isReloading) // 재장전 멈춤
+            StopCoroutine("Reload"); // 코루틴 정지
+            Destroy(currentWeapon); // 현재 총 파괴
+        }
     }
 
     void Aim(bool p_isAiming) // 조준
@@ -140,7 +150,6 @@ public class Weapon : MonoBehaviourPunCallbacks
     [PunRPC]
     void Shoot() // 발사
     {
-      
         Transform t_spawn = transform.Find("Normal Camera"); // 총의 발사 위치
 
         // 탄 퍼짐
@@ -157,11 +166,27 @@ public class Weapon : MonoBehaviourPunCallbacks
         RaycastHit t_hit = new RaycastHit(); // 총알 충돌 정보
         if (Physics.Raycast(t_spawn.position, t_bloom, out t_hit, 1000f, canBeShot)) // 충돌 확인
         {
-            GameObject t_newBulletHole = Instantiate(bulletHolePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject; // 충돌 지점 총탄자국 생성
-            t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal); // 총알 충돌 지점을 기준으로 회전
-            Destroy(t_newBulletHole, 5f); // 5초후 자국 파괴
+            if (Physics.Raycast(t_spawn.position, t_bloom, out t_hit, 1000f, canBeShot))
+            {
+                if (t_hit.collider.gameObject.layer == 9) // 총알이 다른 플레이어 충돌시
+                {
+                    t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[gunIndex].damage); // 다른 플레이어 데미지 입힘
+                }
+                else if (t_hit.collider.CompareTag("Player"))
+                {
+                    // do nothing if the hit object is player
+                }
+                else
+                {
+                    // 총탄자국 생성
+                    GameObject t_newBulletHole = Instantiate(bulletHolePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject; // 충돌 지점 총탄자국 생성
+                    t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal); // 총알 충돌 지점을 기준으로 회전
+                    Destroy(t_newBulletHole, 5f); // 5초후 자국 파괴
+                }
+            }
 
-            if(photonView.IsMine) // 자신인지
+
+            if (photonView.IsMine) // 자신인지
             { 
                 if(t_hit.collider.gameObject.layer == 9) // 총알이 다른 플레이어 충돌시
                 {
@@ -169,29 +194,9 @@ public class Weapon : MonoBehaviourPunCallbacks
                 }
             }
         }
-
         currentWeapon.transform.Rotate(-loadout[gunIndex].recoil,0,0); // 무기의 회전값 지정
-        currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[gunIndex].rebound; // 무기 반동값 지정
-
-       
+        currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[gunIndex].rebound; // 무기 반동값 지정 
     }
-
-    [PunRPC]
-    private void TakeDamage(int p_damage) // 다른 플레이어 데미지 
-    {
-        // GameManager 컴포넌트 찾기
-        GameManager gameManager = GetComponent<GameManager>();
-        if (gameManager != null)
-        {
-            gameManager.TakeDamage(p_damage); // 플레이어 체력 감소
-            Debug.Log("o");
-        }
-        else
-        {
-            Debug.Log("x");
-        }
-    }
-
 
     public void RefreshAmmo(Text p_text) // 현재 탄창 정보 UI 업데이트
     {

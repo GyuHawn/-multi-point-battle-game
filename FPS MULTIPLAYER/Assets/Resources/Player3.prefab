@@ -15,12 +15,13 @@ GameObject:
   - component: {fileID: 5711889626934406731}
   - component: {fileID: 8092299882197503491}
   - component: {fileID: 6333787793115363671}
+  - component: {fileID: 6506277266337994687}
   - component: {fileID: 1043148302911770574}
   - component: {fileID: 7453166612187120449}
   - component: {fileID: 5432323214574211183}
   m_Layer: 10
   m_Name: Player3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,6 +195,19 @@ MonoBehaviour:
   current_health: 0
   manager: {fileID: 0}
   weaponParentCurrentPos: {x: 0, y: 0, z: 0}
+--- !u!114 &6506277266337994687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352600124376801821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad3ce55338738c4587ecbe4e2dd2609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolTime: 1
 --- !u!114 &1043148302911770574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,8 +249,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 0
   ObservedComponents:
-  - {fileID: 5432323214574211183}
   - {fileID: 6333787793115363671}
+  - {fileID: 5432323214574211183}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

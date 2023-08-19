@@ -7,8 +7,6 @@ using TMPro;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 {
-    GameManager gameManager;
-
     public float speed;
     public float sprintModifier = 2;
     public float jumpForce;
@@ -129,7 +127,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         if (Input.GetKeyDown(KeyCode.U))
-            gameManager.TakeDamage(100);
 
         //Head Bob
         
