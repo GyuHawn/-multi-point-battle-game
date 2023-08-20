@@ -46,6 +46,7 @@ MonoBehaviour:
   - RefreshHealthBar
   - RPC_AddMessage
   - TakeDamageWithFloat
+  - OnKill
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

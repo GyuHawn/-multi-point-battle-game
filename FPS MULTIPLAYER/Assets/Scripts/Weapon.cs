@@ -118,13 +118,6 @@ public class Weapon : MonoBehaviourPunCallbacks
         t_newWeapon.GetComponent<Sway>().enabled = photonView.IsMine; // 총의 Sway 설정
 
         currentWeapon = t_newWeapon; // 현재의 총 상태를 새로운 총으로 변경
-
-        if(playerMove.current_health <= 0)
-        {
-            if (isReloading) // 재장전 멈춤
-            StopCoroutine("Reload"); // 코루틴 정지
-            Destroy(currentWeapon); // 현재 총 파괴
-        }
     }
 
     void Aim(bool p_isAiming) // 조준

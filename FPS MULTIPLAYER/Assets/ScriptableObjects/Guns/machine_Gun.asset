@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: machine_Gun
   m_EditorClassIdentifier: 
   gunName: 
-  damage: 100
+  damage: 10000
   firerate: 0.1
   spread: 0
   recoil: 10
   rebound: 0
   aimSpeed: 50
-  prefab: {fileID: 166085164503250512, guid: 74b0e3d16df595a49878b7e752ebaa34, type: 3}
   maxAmmo: 50
   clipsize: 20
   reload: 2.5
   burst: 1
+  prefab: {fileID: 166085164503250512, guid: 74b0e3d16df595a49878b7e752ebaa34, type: 3}

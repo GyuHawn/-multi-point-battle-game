@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
-
+using TMPro;
 public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
 {
     private PlayerMovement player;
-
     public float coolTime = 1f;
     private float lastDamageTime = 0f; // 마지막 데미지 처리 시간 저장용 변수
+
+    public int killCount = 0;
 
     [PunRPC]
     public void TakeDamage(int p_damage)
@@ -37,9 +38,17 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
 
                     if (player.current_health <= 0)
                     {
+                        if (photonView.IsMine)
+                        {
+                            photonView.RPC("OnKill", RpcTarget.AllBuffered, killCount);
+                        }
                         player.manager.Spawn();
                         PhotonNetwork.Destroy(gameObject);
+                        killCount++;
+                        Debug.Log("YOU KILLED! Kill Count: " + killCount);
                         Debug.Log("YOU DIED");
+
+
                     }
                     lastDamageTime = currentTime; // 마지막 데미지 처리 시간 갱신
                 }
@@ -73,11 +82,30 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
 
                 if (player.current_health <= 0)
                 {
+                    if (photonView.IsMine)
+                    {
+                        photonView.RPC("OnKill", RpcTarget.AllBuffered, killCount);
+                    }
                     player.manager.Spawn();
                     PhotonNetwork.Destroy(gameObject);
+                    killCount++;
                     Debug.Log("YOU DIED");
+
                 }
             }
+        }
+    }
+
+    [PunRPC]
+    void OnKill(int killCount)
+    {
+        if (photonView && photonView.IsMine)
+        {
+            this.killCount = killCount + 1;
+            Debug.Log("YOU DIED. Kill Count: " + killCount);
+
+            // 현재 킬 카운트를 다른 플레이어들에게 전파
+            photonView.RPC("OnKill", RpcTarget.OthersBuffered, this.killCount);
         }
     }
 
@@ -87,6 +115,7 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 로컬 플레이어의 데이터 전송
             stream.SendNext(player.current_health);
+            stream.SendNext(killCount);
         }
         else
         {
@@ -94,6 +123,9 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
             int health = (int)stream.ReceiveNext();
             player.current_health = health;
             player.RefreshHealthBar();
+
+            int count = (int)stream.ReceiveNext();
+            killCount = count;
         }
     }
 }

@@ -375,6 +375,7 @@
 "Assets/Prefabs/PhotonLibs/WebSocket/SocketWebTcp.cs"
 "Assets/Prefabs/PhotonLibs/WebSocket/WebSocket.cs"
 "Assets/Scripts/ChatManager.cs"
+"Assets/Scripts/KillText.cs"
 "Assets/Scripts/Launcher.cs"
 "Assets/Scripts/Look.cs"
 "Assets/Scripts/Manager.cs"

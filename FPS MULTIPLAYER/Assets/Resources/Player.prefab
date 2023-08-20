@@ -473,6 +473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coolTime: 1
+  killCount: 0
 --- !u!114 &3682673690337617581
 MonoBehaviour:
   m_ObjectHideFlags: 0
