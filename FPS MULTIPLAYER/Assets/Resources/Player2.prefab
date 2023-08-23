@@ -342,7 +342,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -405,7 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769a0a9d171febf4bae5ebf22a2e053d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 600
+  speed: 1000
   sprintModifier: 2
   jumpForce: 400
   max_health: 1000
@@ -439,7 +439,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coolTime: 1
-  killCount: 0
 --- !u!114 &2424759032317264175
 MonoBehaviour:
   m_ObjectHideFlags: 0

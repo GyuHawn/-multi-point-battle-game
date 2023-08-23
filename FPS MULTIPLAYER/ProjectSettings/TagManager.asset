@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Manager
+  - Road
+  - Dfs
+  - Spd
   layers:
   - Default
   - TransparentFX
