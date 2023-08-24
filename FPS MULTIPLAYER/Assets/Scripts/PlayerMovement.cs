@@ -4,9 +4,12 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 {
+    private string currentSceneName;
+
     public float speed;
     public float sprintModifier = 2;
     public float jumpForce;
@@ -32,9 +35,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     private float sprintFOVModifier = 1.5f;
     private bool crouched;
     private bool sliding;
-    private Text ui_ammo;
     private Rigidbody rig;
+
     private Transform ui_healthbar;
+    private Text ui_ammo;
+
     public Vector3 weaponParentCurrentPos;
     private Vector3 origin;
     private Vector3 weaponParentOrigin;
@@ -62,6 +67,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     #endregion
     private void Start()
     {
+        currentSceneName = SceneManager.GetActiveScene().name;
         manager = GameObject.Find("Manager").GetComponent<Manager>();
         weapon = GetComponent<Weapon>();
         anim = GetComponent<Animator>();
@@ -87,9 +93,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
         if(photonView.IsMine)
         {
-            ui_healthbar = GameObject.Find("HUD/Health/bar").transform;
-            ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
-            RefreshHealthBar();
+            if (ui_healthbar != null)
+            {
+                ui_healthbar = GameObject.Find("HUD/Health/bar").transform;
+                ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
+                RefreshHealthBar();
+            }
+            if (ui_healthbar = null) { }
         }
 
         anim.SetBool("Run", false);
@@ -171,10 +181,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
             weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 10f);
         }
 
-
-        //UI Refresh HealthBar
-        RefreshHealthBar();
-        weapon.RefreshAmmo(ui_ammo);
+        if (currentSceneName == "Map")
+        {
+            //UI Refresh HealthBar
+            RefreshHealthBar();
+            weapon.RefreshAmmo(ui_ammo);
+        }
     }
     void FixedUpdate()
     {
@@ -287,7 +299,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         targetWeaponBobPosition = weaponParentCurrentPos + new Vector3(Mathf.Cos(p_z) * p_x_intensity *t_aim_adjust, Mathf.Sin(p_z * 2) * p_y_intensity *t_aim_adjust, 0);
     }
 
-    // 데미지 있던곳
     
     public void RefreshHealthBar()
     {

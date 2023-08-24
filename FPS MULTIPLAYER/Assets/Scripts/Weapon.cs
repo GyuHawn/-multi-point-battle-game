@@ -5,6 +5,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using Photon.Pun.Demo.PunBasics;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class Weapon : MonoBehaviourPunCallbacks
 {
@@ -23,6 +24,12 @@ public class Weapon : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (currentSceneName != "Map")
+        {
+            enabled = false; // 스크립트 비활성화
+            return;
+        }
         pDamage = FindObjectOfType<PDamage>();
         playerMove = FindObjectOfType<PlayerMovement>();
     }
