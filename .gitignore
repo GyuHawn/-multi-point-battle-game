@@ -74,8 +74,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# Livrary 폴더 제외
-[Ll]ivrary/
-[Ll]ivrary.meta
+# Library 폴더 제외
+[Ll]ibrary/
+[Ll]ibrary.meta
 
 # End of https://www.toptal.com/developers/gitignore/api/unity
