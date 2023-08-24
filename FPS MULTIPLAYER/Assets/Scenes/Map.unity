@@ -2025,7 +2025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefabs:
   - {fileID: 3682673690337617557, guid: e0183697d3bc0d7478b1faa4b694cddb, type: 3}
-  - {fileID: 4562686703206627469, guid: f28a85a37fc52fe41bfde56d112bf0b7, type: 3}
+  - {fileID: 2586166908873100542, guid: fd50f3f012a40c141bb662512fab4f9e, type: 3}
   - {fileID: 352600124376801821, guid: 718398ace35bd6340b4ea47f8e101e80, type: 3}
   spawnPoints:
   - {fileID: 1747942626}
