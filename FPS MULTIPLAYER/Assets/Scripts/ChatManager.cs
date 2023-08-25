@@ -14,6 +14,8 @@ public class ChatManager : MonoBehaviourPunCallbacks
     private List<string> messages = new List<string>();
     public TMP_InputField chatInput;
     public TextMeshProUGUI chatContent;
+    public bool isInputtingChat = false; // 채팅 입력 중인지 여부를 나타내는 변수
+
 
     void Start()
     {
@@ -51,11 +53,11 @@ public class ChatManager : MonoBehaviourPunCallbacks
         photonView.RPC("RPC_AddMessage", RpcTarget.All, NewMessage);
     }
 
-    public void SendChat() 
+    public void SendChat()
     {
         string blankCheck = chatInput.text;
         blankCheck = Regex.Replace(blankCheck, @"\s", "");
-        if(blankCheck == "")
+        if (blankCheck == "")
         {
             chatInput.text = "";
             return;
@@ -89,6 +91,16 @@ public class ChatManager : MonoBehaviourPunCallbacks
                 BuildChat();
                 delay = Time.time + 0.25f;
             }
+
+            // 채팅 입력 중인지 여부 체크
+            if (chatInput.isFocused)
+            {
+                isInputtingChat = true;
+            }
+            else
+            {
+                isInputtingChat = false;
+            }
         }
         else if (messages.Count > 0)
         {
@@ -96,23 +108,28 @@ public class ChatManager : MonoBehaviourPunCallbacks
             chatContent.text = "";
         }
 
-        if (Input.GetKeyDown(KeyCode.Return) && chatInput.text != "")
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            SendChat();
-            DeselectChatInput();
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Return) && chatInput.text == "")
-        {
-            if (!chatInput.isFocused)
+            if (chatInput.text != "")
             {
-                SelectChatInput();
+                SendChat();
+                DeselectChatInput();
             }
             else
             {
-                DeselectChatInput();
+                if (!chatInput.isFocused)
+                {
+                    SelectChatInput();
+                }
+                else
+                {
+                    DeselectChatInput();
+                }
             }
         }
+
+        // 채팅 입력 중인지 여부 체크
+        isInputtingChat = chatInput.isFocused;
     }
 
     private void SelectChatInput()

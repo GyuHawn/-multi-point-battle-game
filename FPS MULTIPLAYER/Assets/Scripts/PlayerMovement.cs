@@ -51,6 +51,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
     private Animator anim;
 
+    private ChatManager chatManager;
+
     #region Photon Callbacks
     public void OnPhotonSerializeView(PhotonStream p_stream, PhotonMessageInfo p_message)
     {
@@ -69,6 +71,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     {
         currentSceneName = SceneManager.GetActiveScene().name;
         manager = GameObject.Find("Manager").GetComponent<Manager>();
+        chatManager = GameObject.Find("ChatPanel").GetComponent<ChatManager>();
         weapon = GetComponent<Weapon>();
         anim = GetComponent<Animator>();
         current_health = max_health;
@@ -107,6 +110,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Update()
     {
+        if (chatManager.isInputtingChat) { return; }
+
         if (!photonView.IsMine)
         {
             RefreshMultiplayerState();
@@ -190,7 +195,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     }
     void FixedUpdate()
     {
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine || chatManager.isInputtingChat) return;
         // Axis
         float t_hmove = Input.GetAxisRaw("Horizontal");
         float t_vmove = Input.GetAxisRaw("Vertical");
