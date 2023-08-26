@@ -28,7 +28,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        if(isReady)
+        if (isReady)
         {
             RoomOptions options = new RoomOptions();
             options.MaxPlayers = 5;
@@ -42,7 +42,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
-        if(isReady)
+        if (isReady)
         {
             PhotonNetwork.JoinRoom(joinInput.text);
         }
@@ -55,8 +55,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("World");
-       // PhotonNetwork.LoadLevel("Map");
-        if (playerName.text != "") 
+        //PhotonNetwork.LoadLevel("Map");
+        if (playerName.text != "")
         {
             PhotonNetwork.NickName = playerName.text;
         }
@@ -68,7 +68,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        if(!PhotonNetwork.InLobby)
+        if (!PhotonNetwork.InLobby)
         {
             PhotonNetwork.JoinLobby();
         }
@@ -97,7 +97,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         string roomString = "";
         for (int i = 0; i < roomInfos.Count; i++) // List 사용
         {
-            roomString +=  i+1 + " : " + roomInfos[i].Name + " [ " + roomInfos[i].PlayerCount + " / " + roomInfos[i].MaxPlayers + " ]" + "\n";
+            roomString += i + 1 + " : " + roomInfos[i].Name + " [ " + roomInfos[i].PlayerCount + " / " + roomInfos[i].MaxPlayers + " ]" + "\n";
         }
         RoomList.text = roomString;
     }
