@@ -54,8 +54,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("World");
-        //PhotonNetwork.LoadLevel("Map");
+        //PhotonNetwork.LoadLevel("World");
+        PhotonNetwork.LoadLevel("Map");
         if (playerName.text != "")
         {
             PhotonNetwork.NickName = playerName.text;

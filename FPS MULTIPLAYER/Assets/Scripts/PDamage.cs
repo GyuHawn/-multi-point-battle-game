@@ -10,7 +10,7 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
     public float coolTime = 1f;
     private float lastDamageTime = 0f; // 마지막 데미지 처리 시간 저장용 변수
     private string currentScene;
-
+    
     private void Awake()
     {
         // 현재 씬의 이름을 가져옵니다.

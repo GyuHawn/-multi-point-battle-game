@@ -183,6 +183,21 @@ public class Weapon : MonoBehaviourPunCallbacks
                     t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal); // 총알 충돌 지점을 기준으로 회전
                     Destroy(t_newBulletHole, 5f); // 5초후 자국 파괴
                 }
+
+                if (t_hit.collider.gameObject.layer == 11) // 총알이 표적 충돌시
+                {
+                    t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("PointUp", RpcTarget.All, loadout[gunIndex].damage); // 표적 데미지 입힘
+                }
+                else if (t_hit.collider.CompareTag("Target"))
+                {
+                }
+                else
+                {
+                    // 총탄자국 생성
+                    GameObject t_newBulletHole = Instantiate(bulletHolePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject; // 충돌 지점 총탄자국 생성
+                    t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal); // 총알 충돌 지점을 기준으로 회전
+                    Destroy(t_newBulletHole, 5f); // 5초후 자국 파괴
+                }
             }
 
 

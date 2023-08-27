@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: machine_Gun
   m_EditorClassIdentifier: 
   gunName: 
-  damage: 10000
+  damage: 200
   firerate: 0.1
   spread: 0
   recoil: 10
