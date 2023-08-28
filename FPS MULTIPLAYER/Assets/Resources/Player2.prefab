@@ -550,8 +550,8 @@ MonoBehaviour:
   player: {fileID: 373325453180476069}
   cams: {fileID: 2451679996499670900}
   weapon: {fileID: 3610286275197566788}
-  xSensitivity: 100
-  ySensitivity: 100
+  xSensitivity: 200
+  ySensitivity: 200
   maxAngle: 60
 --- !u!114 &594096352367664008
 MonoBehaviour:
@@ -619,7 +619,7 @@ MonoBehaviour:
     type: 3}
   canBeShot:
     serializedVersion: 2
-    m_Bits: 769
+    m_Bits: 2817
   isAiming: 0
 --- !u!114 &6670278928423929016
 MonoBehaviour:

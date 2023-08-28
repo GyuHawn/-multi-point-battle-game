@@ -5,7 +5,7 @@ using Photon;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PointObj : MonoBehaviourPunCallbacks
+public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 {
     private string currentScene;
 
@@ -38,6 +38,8 @@ public class PointObj : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        gameObject.layer = 11;
+        current_health = max_health;
         // 초기 위치 저장
         initialPosition = transform.position;
     }
@@ -77,53 +79,38 @@ public class PointObj : MonoBehaviourPunCallbacks
     [PunRPC]
     public void PointUp(int p_damage)
     {
-        if (photonView.IsMine)
+        float currentTime = Time.time; // 현재 시간 저장
+        float timePassed = currentTime - lastDamageTime; // 마지막 데미지 처리 이후 경과 시간 계산
+
+        if (timePassed >= coolTime) // 데미지 처리 Cool Time 이 지났다면
         {
-            PhotonView pv = GetComponent<PhotonView>();
-            if (!pv.ObservedComponents.Contains(this))
+            current_health -= p_damage;
+
+            Debug.Log("데미지");
+            if (current_health <= 0)
             {
-                pv.ObservedComponents.Add(this);
+                PhotonNetwork.Destroy(gameObject);
             }
-
-            float currentTime = Time.time; // 현재 시간 저장
-            float timePassed = currentTime - lastDamageTime; // 마지막 데미지 처리 이후 경과 시간 계산
-
-            if (timePassed >= coolTime) // 데미지 처리 Cool Time 이 지났다면
-            {
-                current_health -= p_damage;
-
-                if (current_health <= 0)
-                {
-                    PhotonNetwork.Destroy(gameObject);
-                }
-                lastDamageTime = currentTime; // 마지막 데미지 처리 시간 갱신
-            }
-            else // 아직 데미지 처리 Cool Time 이 지나지 않았다면
-            {
-                Debug.Log("Cool Time Not Over!");
-            }
-
+            lastDamageTime = currentTime; // 마지막 데미지 처리 시간 갱신
         }
+        else // 아직 데미지 처리 Cool Time 이 지나지 않았다면
+        {
+            Debug.Log("Cool Time Not Over!");
+        }
+
+
     }
 
     [PunRPC]
     public void PointUpWithFloat(float p_damage)
     {
-        if (photonView.IsMine)
+        current_health -= (int)p_damage;
+
+        if (current_health <= 0)
         {
-            PhotonView pv = GetComponent<PhotonView>();
-            if (!pv.ObservedComponents.Contains(this))
-            {
-                pv.ObservedComponents.Add(this);
-            }
-
-            current_health -= (int)p_damage;
-
-            if (current_health <= 0)
-            {
-                PhotonNetwork.Destroy(gameObject);
-            }
+            PhotonNetwork.Destroy(gameObject);
         }
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

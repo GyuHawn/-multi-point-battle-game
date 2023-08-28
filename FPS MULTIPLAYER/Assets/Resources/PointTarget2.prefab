@@ -76,47 +76,47 @@ PrefabInstance:
     - target: {fileID: -6277282614459366572, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5824510187379060028, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5787485398377148261, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4554164685141966978, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4321669563877381612, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4053475762834959992, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3690466813691664262, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1763719688367969446, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -391268320553695201, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
@@ -126,7 +126,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
@@ -136,27 +136,27 @@ PrefabInstance:
     - target: {fileID: 2071963930070466410, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3137420652271710164, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3336865217437924264, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7025827047987426881, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8273190609678553184, guid: af88cdbb0ac0fa6498c13a53e41562a3,
         type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -178,6 +178,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -1702534870569030658}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af88cdbb0ac0fa6498c13a53e41562a3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -857549681490996088}
   m_SourcePrefab: {fileID: 100100000, guid: af88cdbb0ac0fa6498c13a53e41562a3, type: 3}
 --- !u!1 &1985541148734048389 stripped
 GameObject:
@@ -247,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf759a6a877c874408f087e77acd3f2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_health: 300
+  max_health: 1
   current_health: 0
   moveDistance: 30
   moveSpeed: 20
@@ -267,10 +271,27 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 2
   OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 1344946190971244868}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-857549681490996088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985541148734048389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0

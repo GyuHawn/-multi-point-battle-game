@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class PointSpwan : MonoBehaviour
+public class PointSpwan : MonoBehaviourPunCallbacks
 {
     public Transform[] sPSP; // SkyPointSpawnPoints // 0 - 11.3 (26) / 1 - 20.3 (35)
     public Transform[] gPSP; // GroundPointSpawnPoints
@@ -36,7 +39,7 @@ public class PointSpwan : MonoBehaviour
 
         if (!usedSpawnPoints.Contains(spawnPoint))
         {
-            Instantiate(GPoint, spawnPoint.position, Quaternion.identity);
+            PhotonNetwork.Instantiate(GPoint.name, spawnPoint.position, Quaternion.identity);
             usedSpawnPoints.Add(spawnPoint);
         }
         
@@ -82,7 +85,8 @@ public class PointSpwan : MonoBehaviour
                 else if (i == 1) // SPoint[1]
                     spawnPosition.y = 35f;
 
-                GameObject spawnedObject = Instantiate(pointPrefab, spawnPosition, rotation);
+                GameObject spawnedObject = PhotonNetwork.Instantiate(pointPrefab.name, spawnPosition, rotation);
+
                 spawnedObject.transform.SetParent(transform);
 
                 if (!usedSpawnPoints.Contains(spawnpoint))
