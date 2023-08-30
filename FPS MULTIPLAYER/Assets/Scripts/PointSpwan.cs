@@ -12,12 +12,33 @@ public class PointSpwan : MonoBehaviourPunCallbacks
     public GameObject[] SPoint;
     public GameObject GPoint;
 
+    public bool isTargetDestroyed = false; // 표적이 제거되었는지 여부를 나타내는 변수
+    private const float RespawnDelay = 5f; // 표적 재생성 딜레이 시간 (초)
+    private float respawnTimer = 0f; // 표적 재생성 타이머
+
     private List<Transform> usedSpawnPoints = new List<Transform>(); // Track used spawn points
 
     private void Start()
     {
         SpawnGPoint();
         SpawnSPoint();
+    }
+
+    void Update()
+    {
+        if (isTargetDestroyed)
+        {
+            respawnTimer += Time.deltaTime;
+
+            if (respawnTimer >= RespawnDelay)
+            {
+                SpawnGPoint();
+                SpawnSPoint();
+
+                isTargetDestroyed = false;
+                respawnTimer = 0f;
+            }
+        }
     }
 
     private void SpawnGPoint()
@@ -44,7 +65,6 @@ public class PointSpwan : MonoBehaviourPunCallbacks
         }
         
     }
-
     private void SpawnSPoint()
     {
         if (sPSP.Length == 0)
@@ -72,13 +92,11 @@ public class PointSpwan : MonoBehaviourPunCallbacks
             {
                 Quaternion rotation = Quaternion.identity;
 
-                // Apply rotation only for SpawnPoint1
                 if (spawnpoint.name == "SpawnPoint1")
                     rotation = Quaternion.Euler(0f, 90f, 0f);
                 else
                     rotation = Quaternion.identity; // 기본적인 회전값
 
-                // Set the desired y-axis position for SPoint[0] and SPoint[1]
                 Vector3 spawnPosition = spawnpoint.position;
                 if (i == 0) // SPoint[0]
                     spawnPosition.y = 26f;
@@ -87,15 +105,11 @@ public class PointSpwan : MonoBehaviourPunCallbacks
 
                 GameObject spawnedObject = PhotonNetwork.Instantiate(pointPrefab.name, spawnPosition, rotation);
 
-                spawnedObject.transform.SetParent(transform);
-
                 if (!usedSpawnPoints.Contains(spawnpoint))
                     usedSpawnPoints.Add(spawnpoint);
             }
         }
     }
-
-
 
     private Transform GetRandomUnusedSkySpawnpoint()
      {

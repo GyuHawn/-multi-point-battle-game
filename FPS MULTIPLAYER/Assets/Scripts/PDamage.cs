@@ -26,7 +26,7 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
             enabled = false;
         }
     }
-
+    
 
     [PunRPC]
     public void TakeDamage(int p_damage)

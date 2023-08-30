@@ -1,30 +1,67 @@
-using Photon.Pun;
-using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using ExitGames.Client.Photon;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 
 public class PointCount : MonoBehaviourPunCallbacks
 {
     public Text killText;
 
-    private int score = 0; // 표적 점수
-
     void Start()
     {
-        if (PhotonNetwork.IsConnected) // 현재 네트워크에 연결되어 있는지 확인
-        {
-            // 로컬 플레이어의 점수를 가져옴
-            score = PhotonNetwork.LocalPlayer.GetScore();
-        }
+        killText = GameObject.Find("KillCount").GetComponent<Text>();
 
-        UpdateKillText(); // 초기화된 점수로 텍스트 업데이트
+        if (PhotonNetwork.IsConnected)
+        {
+            UpdateKillText();
+            // Subscribe to OnPlayerPropertiesChanged event to handle real-time updates of scores from other players.
+            PhotonNetwork.NetworkingClient.EventReceived += OnEventReceived;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            // Unsubscribe from OnPlayerPropertiesChanged event when the script is destroyed.
+            PhotonNetwork.NetworkingClient.EventReceived -= OnEventReceived;
+        }
+    }
+
+    private void OnEventReceived(EventData photonEvent)
+    {
+        if (photonEvent.Code == 1) // Custom event code for score update
+        {
+            object[] data = (object[])photonEvent.CustomData;
+
+            int playerId = (int)data[0];
+            int score = (int)data[1];
+
+            if (playerId == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                UpdateKillText();
+            }
+        }
     }
 
     public void UpdateKillText()
     {
-        killText.text = score.ToString(); // 텍스트 업데이트
-    }
+        int score = 0;
 
+        if (PhotonNetwork.IsConnected)
+        {
+            score = PhotonNetwork.LocalPlayer.GetScore();
+
+            // Update the kill count text on all clients using a custom event
+            object[] data = new object[] { PhotonNetwork.LocalPlayer.ActorNumber, score };
+            RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            PhotonNetwork.RaiseEvent(1, data, options, SendOptions.SendReliable);
+        }
+
+        killText.text = score.ToString();
+    }
 }

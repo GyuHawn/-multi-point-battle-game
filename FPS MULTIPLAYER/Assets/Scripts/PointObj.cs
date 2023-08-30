@@ -4,9 +4,12 @@ using UnityEngine;
 using Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
 
 public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 {
+    PointSpwan pointspwan;
+
     private string currentScene;
 
     public float max_health;
@@ -23,6 +26,7 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Awake()
     {
+        pointspwan = FindObjectOfType<PointSpwan>();
         // 현재 씬의 이름을 가져옵니다.
         currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         // 현재 씬의 이름이 "Map"인 경우에만 PDamage 스크립트를 활성화합니다.
@@ -79,27 +83,23 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void PointUp(int p_damage)
     {
-        float currentTime = Time.time; // 현재 시간 저장
-        float timePassed = currentTime - lastDamageTime; // 마지막 데미지 처리 이후 경과 시간 계산
+        current_health -= p_damage;
 
-        if (timePassed >= coolTime) // 데미지 처리 Cool Time 이 지났다면
+        if (current_health <= 0)
         {
-            current_health -= p_damage;
-
-            Debug.Log("데미지");
-            if (current_health <= 0)
+            if (photonView != null && photonView.IsMine)
             {
                 PhotonNetwork.Destroy(gameObject);
+
+                pointspwan.isTargetDestroyed = true;
             }
-            lastDamageTime = currentTime; // 마지막 데미지 처리 시간 갱신
+            else
+            {
+                Debug.Log("오브젝트 없음");
+            }
         }
-        else // 아직 데미지 처리 Cool Time 이 지나지 않았다면
-        {
-            Debug.Log("Cool Time Not Over!");
-        }
-
-
     }
+
 
     [PunRPC]
     public void PointUpWithFloat(float p_damage)
@@ -112,6 +112,19 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
         }
 
     }
+
+    private void IncreaseScore()
+    {
+        if (PhotonNetwork.IsConnected && photonView != null && photonView.Owner != null)
+        {
+            int playerId = photonView.Owner.ActorNumber;
+
+            PhotonNetwork.LocalPlayer.AddScore(1);
+
+            FindObjectOfType<PointCount>()?.UpdateKillText();
+        }
+    }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -129,4 +142,6 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
+
+
 }

@@ -150,6 +150,11 @@ public class Weapon : MonoBehaviourPunCallbacks
     [PunRPC]
     void Shoot() // 발사
     {
+        if (currentWeapon == null)
+        {
+            return;
+        }
+
         Transform t_spawn = transform.Find("Normal Camera"); // 총의 발사 위치
 
         // 탄 퍼짐
@@ -186,12 +191,12 @@ public class Weapon : MonoBehaviourPunCallbacks
             }
 
             if (photonView.IsMine) // 자신인지
-            { 
+            {   
                 if(t_hit.collider.gameObject.layer == 9) // 총알이 다른 플레이어 충돌시
                 {
                     t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[gunIndex].damage); // 다른 플레이어 데미지 입힘
                 }
-                else if (t_hit.collider.gameObject.layer == 11) // 총알이 표적 충돌시
+                if (t_hit.collider.gameObject.layer == 11) // 총알이 표적 충돌시
                 {
                     t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("PointUp", RpcTarget.All, loadout[gunIndex].damage); // 표적 데미지 입힘
                 }
@@ -205,7 +210,7 @@ public class Weapon : MonoBehaviourPunCallbacks
     {
         int t_clip = loadout[gunIndex].GetClip(); // 탄창 정보를 변수에 저장
         int t_stache = loadout[gunIndex].GetStash();
-
+        
         p_text.text = t_clip.ToString() + " / " + t_stache.ToString(); // 탄창 정보를 문자열로 표시
     }
 
