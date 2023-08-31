@@ -179,7 +179,9 @@ public class Weapon : MonoBehaviourPunCallbacks
                 }
                 else if (t_hit.collider.gameObject.layer == 11) // 총알이 표적 충돌시
                 {
-                    t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("PointUp", RpcTarget.All, loadout[gunIndex].damage); // 표적 데미지 입힘
+                    var targetPhotonView = t_hit.collider.transform.root.gameObject.GetPhotonView();
+                    if (targetPhotonView != null && targetPhotonView.IsMine)
+                        targetPhotonView.RPC("PointUp", RpcTarget.All, loadout[gunIndex].damage); // 표적 데미지 입힘
                 }
                 else
                 {
@@ -195,10 +197,6 @@ public class Weapon : MonoBehaviourPunCallbacks
                 if(t_hit.collider.gameObject.layer == 9) // 총알이 다른 플레이어 충돌시
                 {
                     t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[gunIndex].damage); // 다른 플레이어 데미지 입힘
-                }
-                if (t_hit.collider.gameObject.layer == 11) // 총알이 표적 충돌시
-                {
-                    t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("PointUp", RpcTarget.All, loadout[gunIndex].damage); // 표적 데미지 입힘
                 }
             }
         }

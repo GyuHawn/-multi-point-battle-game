@@ -24,6 +24,8 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
     public float coolTime = 1f;
     private float lastDamageTime = 0f; // 마지막 데미지 처리 시간 저장용 변수
 
+    public string targetType;
+
     private void Awake()
     {
         pointspwan = FindObjectOfType<PointSpwan>();
@@ -79,52 +81,55 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
         var newPosition = new Vector3(initialPosition.x, initialPosition.y, transform.position.z);
         transform.SetPositionAndRotation(newPosition, Quaternion.identity);
     }
-
     [PunRPC]
     public void PointUp(int p_damage)
     {
         current_health -= p_damage;
 
-        if (current_health <= 0)
+        if (current_health <= 0 && photonView != null && photonView.IsMine)
         {
-            if (photonView != null && photonView.IsMine)
-            {
-                PhotonNetwork.Destroy(gameObject);
+            bool isSpecialTarget = gameObject.name == "PointTarget2(Clone)";
 
-                pointspwan.isTargetDestroyed = true;
-            }
-            else
-            {
-                Debug.Log("오브젝트 없음");
-            }
+            PhotonNetwork.Destroy(gameObject);
+
+            pointspwan.isTargetDestroyed = true;
+
+            int playerId = photonView.Owner.ActorNumber;
+
+            int scoreIncrease = isSpecialTarget ? 2 : 1;
+
+            PhotonNetwork.LocalPlayer.AddScore(scoreIncrease);
+
+            int newScore = PhotonNetwork.LocalPlayer.GetScore();
+
+            FindObjectOfType<PointCount>().photonView.RPC("UpdateKillTextRPC", RpcTarget.AllBuffered, newScore);
         }
     }
-
 
     [PunRPC]
     public void PointUpWithFloat(float p_damage)
     {
         current_health -= (int)p_damage;
 
-        if (current_health <= 0)
+        if (current_health <= 0 && photonView != null && photonView.IsMine)
         {
+            bool isSpecialTarget = gameObject.name == "PointTarget2(Clone)";
+
             PhotonNetwork.Destroy(gameObject);
-        }
 
-    }
+            pointspwan.isTargetDestroyed = true;
 
-    private void IncreaseScore()
-    {
-        if (PhotonNetwork.IsConnected && photonView != null && photonView.Owner != null)
-        {
             int playerId = photonView.Owner.ActorNumber;
 
-            PhotonNetwork.LocalPlayer.AddScore(1);
+            int scoreIncrease = isSpecialTarget ? 2 : 1;
 
-            FindObjectOfType<PointCount>()?.UpdateKillText();
+            PhotonNetwork.LocalPlayer.AddScore(scoreIncrease);
+
+            int newScore = PhotonNetwork.LocalPlayer.GetScore();
+
+            FindObjectOfType<PointCount>().photonView.RPC("UpdateKillTextRPC", RpcTarget.AllBuffered, newScore);
         }
     }
-
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -143,5 +148,5 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-
+    
 }

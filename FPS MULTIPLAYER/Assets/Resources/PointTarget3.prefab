@@ -386,6 +386,7 @@ MonoBehaviour:
   moveDistance: 0
   moveSpeed: 0
   coolTime: 1
+  targetType: 
 --- !u!114 &6924666840693767549
 MonoBehaviour:
   m_ObjectHideFlags: 0
