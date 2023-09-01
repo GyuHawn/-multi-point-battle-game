@@ -16,10 +16,21 @@ public class WorldGame : MonoBehaviour
         {
             Press_Key.SetActive(true);
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if(pointGame.name == "PointGamePortal")
             {
-                SceneManager.LoadScene("Map");
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    SceneManager.LoadScene("Map");
+                }
             }
+            else if (pointGame.name == "DodgeGamePortal")
+            {
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    SceneManager.LoadScene("Map2");
+                }
+            }
+
         }
     }
 
