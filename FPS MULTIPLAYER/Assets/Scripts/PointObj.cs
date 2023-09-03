@@ -5,6 +5,7 @@ using Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
+using ExitGames.Client.Photon;
 
 public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -81,6 +82,7 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
         var newPosition = new Vector3(initialPosition.x, initialPosition.y, transform.position.z);
         transform.SetPositionAndRotation(newPosition, Quaternion.identity);
     }
+
     [PunRPC]
     public void PointUp(int p_damage)
     {
@@ -98,11 +100,10 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 
             int scoreIncrease = isSpecialTarget ? 2 : 1;
 
-            PhotonNetwork.LocalPlayer.AddScore(scoreIncrease);
-
-            int newScore = PhotonNetwork.LocalPlayer.GetScore();
-
-            FindObjectOfType<PointCount>().photonView.RPC("UpdateKillTextRPC", RpcTarget.AllBuffered, newScore);
+            // Send an event to update the score for this player only
+            object[] data = new object[] { playerId, scoreIncrease };
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            PhotonNetwork.RaiseEvent(1, data, raiseEventOptions, SendOptions.SendReliable);
         }
     }
 
@@ -123,11 +124,10 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 
             int scoreIncrease = isSpecialTarget ? 2 : 1;
 
-            PhotonNetwork.LocalPlayer.AddScore(scoreIncrease);
-
-            int newScore = PhotonNetwork.LocalPlayer.GetScore();
-
-            FindObjectOfType<PointCount>().photonView.RPC("UpdateKillTextRPC", RpcTarget.AllBuffered, newScore);
+            // Send an event to update the score for this player only
+            object[] data = new object[] { playerId, scoreIncrease };
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            PhotonNetwork.RaiseEvent(1, data, raiseEventOptions, SendOptions.SendReliable);
         }
     }
 

@@ -53,9 +53,11 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         player.manager.Spawn();
                         PhotonNetwork.Destroy(gameObject);
+
+                        // Decrease the kill count when player dies
+                        FindObjectOfType<PointCount>().photonView.RPC("DecreaseKillTextRPC", RpcTarget.AllBuffered);
+
                         Debug.Log("YOU DIED");
-
-
                     }
                     lastDamageTime = currentTime; // 마지막 데미지 처리 시간 갱신
                 }
@@ -88,8 +90,11 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     player.manager.Spawn();
                     PhotonNetwork.Destroy(gameObject);
-                    Debug.Log("YOU DIED");
 
+                    // Decrease the kill count when player dies
+                    FindObjectOfType<PointCount>().photonView.RPC("DecreaseKillTextRPC", RpcTarget.AllBuffered);
+
+                    Debug.Log("YOU DIED");
                 }
             }
         }

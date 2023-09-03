@@ -1690,6 +1690,7 @@ GameObject:
   - component: {fileID: 660924828}
   - component: {fileID: 660924829}
   - component: {fileID: 660924830}
+  - component: {fileID: 660924831}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Manager
@@ -1817,6 +1818,24 @@ MonoBehaviour:
   - {fileID: 1985541148734048389, guid: 0891bb3ee18a60549b3a2f26f1f27b24, type: 3}
   GPoint: {fileID: 1119190969863682265, guid: 22fd42354b381b2429d9c15a811551b1, type: 3}
   isTargetDestroyed: 0
+--- !u!114 &660924831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660924823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc6534f336f5a0645aa470f7f995a40a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gwinnerName: {fileID: 0}
+  gwinnerKill: {fileID: 0}
+  swinnerName: {fileID: 0}
+  swinnerKill: {fileID: 0}
+  bwinnerName: {fileID: 0}
+  bwinnerKill: {fileID: 0}
 --- !u!1 &674008078
 GameObject:
   m_ObjectHideFlags: 0

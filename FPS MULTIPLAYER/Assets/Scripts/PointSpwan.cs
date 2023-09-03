@@ -13,7 +13,7 @@ public class PointSpwan : MonoBehaviourPunCallbacks
     public GameObject GPoint;
 
     public bool isTargetDestroyed = false; // 표적이 제거되었는지 여부를 나타내는 변수
-    private const float RespawnDelay = 5f; // 표적 재생성 딜레이 시간 (초)
+    private const float RespawnDelay = 1f; // 표적 재생성 딜레이 시간 (초)
     private float respawnTimer = 0f; // 표적 재생성 타이머
 
     private List<Transform> usedSpawnPoints = new List<Transform>(); // Track used spawn points
@@ -32,6 +32,8 @@ public class PointSpwan : MonoBehaviourPunCallbacks
 
             if (respawnTimer >= RespawnDelay)
             {
+                usedSpawnPoints.Clear(); // Reset the list of used spawn points
+
                 SpawnGPoint();
                 SpawnSPoint();
 

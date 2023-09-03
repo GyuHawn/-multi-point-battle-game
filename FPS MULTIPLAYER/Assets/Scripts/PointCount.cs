@@ -16,12 +16,29 @@ public class PointCount : MonoBehaviourPunCallbacks
     {
         if (SceneManager.GetActiveScene().name == "Map")
         {
-            killText = GameObject.Find("KillCount").GetComponent<Text>();
+            GameObject obj = GameObject.Find("KillCount");
+            killText = obj?.GetComponent<Text>();
         }
     }
 
+
     private void OnDestroy()
     {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= OnEventReceived;
+        }
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        PhotonNetwork.NetworkingClient.EventReceived += OnEventReceived;
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.NetworkingClient.EventReceived -= OnEventReceived;
@@ -33,14 +50,25 @@ public class PointCount : MonoBehaviourPunCallbacks
         if (photonEvent.Code == 1)
         {
             object[] data = (object[])photonEvent.CustomData;
-
             int playerId = (int)data[0];
-            int score = (int)data[1];
+            int scoreIncrease = (int)data[1];
 
             if (playerId == PhotonNetwork.LocalPlayer.ActorNumber && SceneManager.GetActiveScene().name == "Map")
             {
-                UpdateKillTextRPC(score);
+                PhotonNetwork.LocalPlayer.AddScore(scoreIncrease);
+                UpdateKillTextRPC(PhotonNetwork.LocalPlayer.GetScore());
             }
+        }
+    }
+
+    [PunRPC]
+    public void DecreaseKillTextRPC()
+    {
+        if (SceneManager.GetActiveScene().name == "Map")
+        {
+            int score = int.Parse(killText.text);
+            score = Mathf.Max(0, score - 1);
+            killText.text = score.ToString();
         }
     }
 
