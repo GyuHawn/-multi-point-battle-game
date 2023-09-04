@@ -12,6 +12,8 @@ public class Manager : MonoBehaviourPunCallbacks
 
     private SelectChar select;
 
+    public static GameObject currentPlayer;
+
     private void Start()
     {
         if (PhotonNetwork.IsConnectedAndReady)
@@ -57,19 +59,19 @@ public class Manager : MonoBehaviourPunCallbacks
         {
             Transform spawner = spawnPoints[Random.Range(0, spawnPoints.Length)]; // 생성되어 있는 스폰 포인트중 랜덤 스폰
             GameObject selectedPlayerPrefab = playerPrefabs[0];
-            PhotonNetwork.Instantiate(selectedPlayerPrefab.name, spawner.position, spawner.rotation); // 선택된 플레이어 프리팹 생성
+            currentPlayer = PhotonNetwork.Instantiate(selectedPlayerPrefab.name, spawner.position, spawner.rotation); // 선택된 플레이어 프리팹 생성
         }
         else if (select.tNum == 2)
         {
             Transform spawner = spawnPoints[Random.Range(0, spawnPoints.Length)]; // 생성되어 있는 스폰 포인트중 랜덤 스폰
             GameObject selectedPlayerPrefab = playerPrefabs[1];
-            PhotonNetwork.Instantiate(selectedPlayerPrefab.name, spawner.position, spawner.rotation); // 선택된 플레이어 프리팹 생성
+            currentPlayer = PhotonNetwork.Instantiate(selectedPlayerPrefab.name, spawner.position, spawner.rotation); // 선택된 플레이어 프리팹 생성
         }
         else if (select.tNum == 3)
         {
             Transform spawner = spawnPoints[Random.Range(0, spawnPoints.Length)]; // 생성되어 있는 스폰 포인트중 랜덤 스폰
             GameObject selectedPlayerPrefab = playerPrefabs[2];
-            PhotonNetwork.Instantiate(selectedPlayerPrefab.name, spawner.position, spawner.rotation); // 선택된 플레이어 프리팹 생성
+            currentPlayer = PhotonNetwork.Instantiate(selectedPlayerPrefab.name, spawner.position, spawner.rotation); // 선택된 플레이어 프리팹 생성
         }
 
     }

@@ -332,7 +332,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
             weaponParentCurrentPos -= Vector3.down * crounchAmount;
         }
     }
-    private void OnCollisionEnter(Collision collision)
+   /* private void OnCollisionEnter(Collision collision)
     {
         if (gameObject.tag == "Dfs")
         {
@@ -342,5 +342,5 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("스피드");
         }
-    }
+    }*/
 }

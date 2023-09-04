@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using Photon.Pun.UtilityScripts;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PointGameResult : MonoBehaviourPunCallbacks
 {
@@ -15,6 +15,9 @@ public class PointGameResult : MonoBehaviourPunCallbacks
     public TMP_Text swinnerKill;
     public TMP_Text bwinnerName;
     public TMP_Text bwinnerKill;
+    public TMP_Text lobbyText;
+
+    private float countdownTimer = 5f;
 
     void Update()
     {
@@ -22,12 +25,24 @@ public class PointGameResult : MonoBehaviourPunCallbacks
         {
             foreach (var player in PhotonNetwork.PlayerList)
             {
-                if (player.GetScore() > 1)
+                if (player.GetScore() > 5)
                 {
                     PlayerPrefs.SetString("PlayerData", GetPlayerData());
                     SceneManager.LoadScene("Result");
                     break;
                 }
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "Result")
+        {
+            countdownTimer -= Time.deltaTime; // 경과 시간 감소
+
+            // 남은 시간 표시
+            lobbyText.text = "Go to Lobby   " + Mathf.CeilToInt(countdownTimer).ToString();
+
+            if (countdownTimer <= 0)
+            {
+                MoveLobby(); // 카운트다운 종료 후 LobbyCount 함수 호출
             }
         }
     }
@@ -45,6 +60,7 @@ public class PointGameResult : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        // 이 부분은 이전 코드와 동일합니다.
         if (SceneManager.GetActiveScene().name == "Result")
         {
             var data = PlayerPrefs.GetString("PlayerData").Split(',');
@@ -76,12 +92,19 @@ public class PointGameResult : MonoBehaviourPunCallbacks
         }
     }
 
-    public void OnClick()
+    public void MoveLobby()
     {
         if (PhotonNetwork.IsMasterClient) // 마스터 클라이언트인 경우에만 Scene 변경을 하도록 함
         {
-            PhotonNetwork.LoadLevel("Menu"); // Menu 씬으로 전환
             PlayerPrefs.DeleteKey("PlayerData");
+
+            // 모든 플레이어의 점수 초기화
+            foreach (var player in PhotonNetwork.PlayerList)
+            {
+                player.SetScore(0);
+            }
+
+            PhotonNetwork.LoadLevel("World"); // Menu 씬으로 전환  
         }
     }
 }

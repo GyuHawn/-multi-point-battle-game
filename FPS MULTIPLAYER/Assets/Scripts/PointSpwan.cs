@@ -7,7 +7,7 @@ using Photon.Realtime;
 
 public class PointSpwan : MonoBehaviourPunCallbacks
 {
-    public Transform[] sPSP; // SkyPointSpawnPoints // 0 - 11.3 (26) / 1 - 20.3 (35)
+    public Transform[] sPSP; // SkyPointSpawnPoints
     public Transform[] gPSP; // GroundPointSpawnPoints
     public GameObject[] SPoint;
     public GameObject GPoint;
