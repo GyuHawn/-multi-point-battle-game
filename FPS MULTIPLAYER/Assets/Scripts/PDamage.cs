@@ -102,20 +102,27 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (currentScene == "Map")
+        if (stream.IsWriting)
         {
-            if (stream.IsWriting)
+            // 로컬 플레이어의 데이터 전송
+            stream.SendNext(currentScene); // 현재 씬 이름도 함께 전송
+            if (currentScene == "Map")
             {
-                // 로컬 플레이어의 데이터 전송
                 stream.SendNext((int)player.current_health); // int로 형변환하여 전송
             }
-            else
+        }
+        else
+        {
+            // 원격 플레이어의 데이터 수신
+            string receivedScene = (string)stream.ReceiveNext(); // 씬 이름 받아옴
+
+            if (receivedScene == "Map" && currentScene == "Map")
             {
-                // 원격 플레이어의 데이터 수신
                 player.current_health = (int)stream.ReceiveNext(); // int로 형변환하여 받아옴
                 player.RefreshHealthBar();
             }
         }
     }
+
 
 }
