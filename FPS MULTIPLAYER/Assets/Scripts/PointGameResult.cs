@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Photon.Pun.UtilityScripts;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Photon.Realtime;
 
 public class PointGameResult : MonoBehaviourPunCallbacks
 {
@@ -94,17 +95,26 @@ public class PointGameResult : MonoBehaviourPunCallbacks
 
     public void MoveLobby()
     {
-        if (PhotonNetwork.IsMasterClient) // 마스터 클라이언트인 경우에만 Scene 변경을 하도록 함
+        if (PhotonNetwork.IsMasterClient)
         {
             PlayerPrefs.DeleteKey("PlayerData");
 
-            // 모든 플레이어의 점수 초기화
             foreach (var player in PhotonNetwork.PlayerList)
-            {
                 player.SetScore(0);
-            }
 
-            PhotonNetwork.LoadLevel("World"); // Menu 씬으로 전환  
+            // PhotonNetwork.LoadLevel("World");  
+
+            Launcher launcher = FindObjectOfType<Launcher>();  // Launcher 컴포넌트 찾기
+
+            if (launcher != null)
+            {
+                string originalRoomName = launcher.originalRoomName;  // 원래의 방 이름 가져오기
+
+                if (!string.IsNullOrEmpty(originalRoomName))  // 만약 원래의 방 이름이 유효하다면...
+                    PhotonNetwork.JoinOrCreateRoom(originalRoomName, new RoomOptions { MaxPlayers = 5 }, TypedLobby.Default);  // 해당 이름으로 룸에 접속하거나 새로 생성하기
+
+                SceneManager.LoadScene("World");
+            }
         }
     }
 }

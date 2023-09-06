@@ -8,6 +8,8 @@ using TMPro;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
+    public string originalRoomName;
+
     public TMP_InputField createInput;
     public TMP_InputField joinInput;
     public TMP_InputField playerName;
@@ -32,7 +34,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             RoomOptions options = new RoomOptions();
             options.MaxPlayers = 5;
-            PhotonNetwork.CreateRoom(createInput.text, options);
+            originalRoomName = createInput.text;  // 생성한 방의 이름 저장
+            PhotonNetwork.CreateRoom(originalRoomName, options);
         }
         else
         {

@@ -198,6 +198,8 @@ MonoBehaviour:
   current_health: 0
   manager: {fileID: 0}
   weaponParentCurrentPos: {x: 0, y: 0, z: 0}
+  Press_Key: {fileID: 2800424099037391931, guid: ceb1a32a938b2d14aaf881c8ee858f5b,
+    type: 3}
 --- !u!114 &8815235392203142332
 MonoBehaviour:
   m_ObjectHideFlags: 0
