@@ -2472,6 +2472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd4947eb0df2ce45ae6c0bc81fce673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalRoomName: 
   createInput: {fileID: 1456422660}
   joinInput: {fileID: 783567013}
   playerName: {fileID: 922111614}

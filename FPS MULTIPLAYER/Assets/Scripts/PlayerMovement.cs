@@ -53,6 +53,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
     private ChatManager chatManager;
 
+    public TMP_Text playerNameTextPrefab;
+    private TMP_Text playerNameTextInstance;
+
     #region Photon Callbacks
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -75,6 +78,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         currentSceneName = SceneManager.GetActiveScene().name;
         manager = GameObject.Find("Manager").GetComponent<Manager>();
         chatManager = GameObject.Find("ChatPanel").GetComponent<ChatManager>();
+
         weapon = GetComponent<Weapon>();
         anim = GetComponent<Animator>();
         current_health = max_health;
@@ -96,12 +100,29 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         weaponParentOrigin = weaponParent.localPosition;
         weaponParentCurrentPos = weaponParentOrigin;
 
-
-        if (photonView.IsMine && currentSceneName == "Map")
+        if (photonView.IsMine)
         {
-            ui_healthbar = GameObject.Find("HUD/Health/bar").transform;
-            ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
-            RefreshHealthBar();
+            if (currentSceneName == "Map")
+            {
+                ui_healthbar = GameObject.Find("HUD/Health/bar").transform;
+                ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
+                RefreshHealthBar();
+            }
+            else if (currentSceneName == "World")
+            {
+                // 로컬 플레이어인 경우 닉네임 설정
+                playerNameTextInstance = Instantiate(playerNameTextPrefab, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
+                playerNameTextInstance.text = PhotonNetwork.NickName;
+            }
+        }
+        else
+        {
+            if (currentSceneName == "World")
+            {
+                // 원격 플레이어인 경우 PhotonView의 Owner의 Nickname을 사용합니다.
+                playerNameTextInstance = Instantiate(playerNameTextPrefab, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
+                playerNameTextInstance.text = photonView.Owner.NickName;
+            }
         }
 
         anim.SetBool("Run", false);
@@ -115,6 +136,19 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         {
             RefreshMultiplayerState();
             return;
+        }
+
+        if (playerNameTextInstance != null)
+        {
+            // 텍스트 중앙 정렬
+            playerNameTextInstance.alignment = TextAlignmentOptions.Center;
+            // 텍스트 사이즈
+            playerNameTextInstance.fontSize = 5;
+            // 이름 태그가 항상 캐릭터 위에 위치하도록 위치를 조정합니다.
+            playerNameTextInstance.transform.position = transform.position + new Vector3(0f, 3f, 0f);
+
+            // 플레이어와 같은 방향으로 회전
+            playerNameTextInstance.transform.rotation = transform.rotation;
         }
 
         // Axis
@@ -332,15 +366,4 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
             weaponParentCurrentPos -= Vector3.down * crounchAmount;
         }
     }
-   /* private void OnCollisionEnter(Collision collision)
-    {
-        if (gameObject.tag == "Dfs")
-        {
-            Debug.Log("방어");
-        }
-        if (gameObject.tag == "Spd")
-        {
-            Debug.Log("스피드");
-        }
-    }*/
 }

@@ -40,13 +40,26 @@ public class PointGamePortal : MonoBehaviourPunCallbacks
 
         string newRoomName = "Room" + Random.Range(0, 1000);
 
-        PhotonNetwork.CreateRoom(newRoomName, options);
-
-        Debug.Log("Created a new room: " + newRoomName);
+        if (!PhotonNetwork.JoinRandomRoom())
+        {
+            Debug.Log("No rooms available. Attempting to create one...");
+        }
 
         StartCoroutine(DelayedSceneLoad(sceneName));
 
         isPLeaving = false;
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        Debug.Log("No rooms available. Creating a new one...");
+
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 4;
+
+        string newRoomName = "Room" + Random.Range(0, 1000);
+
+        PhotonNetwork.CreateRoom(newRoomName, options);
     }
 
     public override void OnLeftRoom()
