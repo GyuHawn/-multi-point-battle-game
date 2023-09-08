@@ -25,6 +25,7 @@ public class PointGamePortal : MonoBehaviourPunCallbacks
                 if (collision.contacts[0].thisCollider.gameObject == this.gameObject)
                 {
                     isPLeaving = true;
+                    collision.gameObject.GetComponent<PlayerMovement>().currentSceneName = sceneName;  // Add this line before leaving the room.
                     PhotonNetwork.LeaveRoom();
                 }
             }

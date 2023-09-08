@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 {
-    private string currentSceneName;
+    public string currentSceneName;
 
     public float speed;
     public float sprintModifier = 2;
@@ -63,11 +63,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(currentSceneName);  // Add this line
         }
         else
         {
             transform.position = (Vector3)stream.ReceiveNext();
             transform.rotation = (Quaternion)stream.ReceiveNext();
+            currentSceneName = (string)stream.ReceiveNext();  // And this line
         }
     }
 
@@ -135,6 +137,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         if (!photonView.IsMine)
         {
             RefreshMultiplayerState();
+
+            gameObject.SetActive(currentSceneName == SceneManager.GetActiveScene().name);
+
             return;
         }
 
