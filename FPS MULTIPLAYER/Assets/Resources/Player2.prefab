@@ -567,7 +567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769a0a9d171febf4bae5ebf22a2e053d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSceneName: 
   speed: 500
   sprintModifier: 2
   jumpForce: 400
@@ -588,6 +587,7 @@ MonoBehaviour:
   normalCam: {fileID: 6453977360603051249}
   current_health: 0
   manager: {fileID: 0}
+  pointGameUI: {fileID: 0}
   weaponParentCurrentPos: {x: 0, y: 0, z: 0}
   playerNameTextPrefab: {fileID: 9130839818570466205, guid: db064049534eda6449a0f1d10da50a6a,
     type: 3}

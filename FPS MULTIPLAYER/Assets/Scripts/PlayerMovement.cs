@@ -8,8 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 {
-    public string currentSceneName;
-
     public float speed;
     public float sprintModifier = 2;
     public float jumpForce;
@@ -37,6 +35,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     private bool sliding;
     private Rigidbody rig;
 
+    public GameObject pointGameUI;
     private Transform ui_healthbar;
     private Text ui_ammo;
 
@@ -63,13 +62,17 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
-            stream.SendNext(currentSceneName);  // Add this line
+                                                
+            if (photonView.IsMine)
+                stream.SendNext(PhotonNetwork.NickName);
         }
         else
         {
             transform.position = (Vector3)stream.ReceiveNext();
             transform.rotation = (Quaternion)stream.ReceiveNext();
-            currentSceneName = (string)stream.ReceiveNext();  // And this line
+                                                              
+            if (!photonView.IsMine && playerNameTextInstance != null)
+                playerNameTextInstance.text = (string)stream.ReceiveNext();
         }
     }
 
@@ -77,8 +80,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     #endregion
     private void Start()
     {
-        currentSceneName = SceneManager.GetActiveScene().name;
-        manager = GameObject.Find("Manager").GetComponent<Manager>();
+        manager = GameObject.Find("MainWorldManager").GetComponent<Manager>();
         chatManager = GameObject.Find("ChatPanel").GetComponent<ChatManager>();
 
         weapon = GetComponent<Weapon>();
@@ -104,27 +106,18 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
-            if (currentSceneName == "Map")
+            if (pointGameUI)
             {
                 ui_healthbar = GameObject.Find("HUD/Health/bar").transform;
                 ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
                 RefreshHealthBar();
             }
-            else if (currentSceneName == "World")
-            {
-                // 로컬 플레이어인 경우 닉네임 설정
-                playerNameTextInstance = Instantiate(playerNameTextPrefab, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
-                playerNameTextInstance.text = PhotonNetwork.NickName;
-            }
-        }
-        else
-        {
-            if (currentSceneName == "World")
-            {
-                // 원격 플레이어인 경우 PhotonView의 Owner의 Nickname을 사용합니다.
-                playerNameTextInstance = Instantiate(playerNameTextPrefab, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
-                playerNameTextInstance.text = photonView.Owner.NickName;
-            }
+
+            // 로컬 플레이어인 경우 닉네임 설정
+            playerNameTextInstance = Instantiate(playerNameTextPrefab, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
+            playerNameTextInstance.text = PhotonNetwork.NickName; // 자신 이름
+            playerNameTextInstance.text = photonView.Owner.NickName; // 로컬 플레이어 이름
+
         }
 
         anim.SetBool("Run", false);
@@ -137,9 +130,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         if (!photonView.IsMine)
         {
             RefreshMultiplayerState();
-
-            gameObject.SetActive(currentSceneName == SceneManager.GetActiveScene().name);
-
             return;
         }
 
@@ -162,75 +152,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
         anim.SetBool("Run", t_hmove != 0 || t_vmove != 0);
 
-        // Controls
-        bool sprint = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        bool jump = Input.GetKeyDown(KeyCode.Space);
-        //bool crouch = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl);
 
-        // States
-        bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.15f, ground);
-        bool isJumping = jump && isGrounded;
-        bool isSprinting = sprint && t_vmove > 0 && isGrounded && !isJumping;
-        // bool isCrouching = crouch && !isSprinting && !isJumping && isGrounded;
-        /*
-           //Crouching
-           if(isCrouching)
-         {
-             photonView.RPC("SetCrouch", RpcTarget.All, !crouched);
-         }*/
-        //Jumping
-        if (isJumping)
-        {
-            if (crouched) photonView.RPC("SetCrouch", RpcTarget.All, false);
-            rig.AddForce(Vector3.up * jumpForce);
-        }
+        RefreshHealthBar();
 
-        if (Input.GetKeyDown(KeyCode.U))
-
-            //Head Bob
-
-            if (sliding)
-            {
-                //SLIDING
-                HeadBob(movementCounter, 0.15F, 0.075F);
-                weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 10f);
-            }
-            else if (t_hmove == 0 && t_vmove == 0)
-            {
-                //IDLING
-                HeadBob(idleCounter, 0.025f, 0.025f);
-                idleCounter += Time.deltaTime;
-                weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 2f);
-            }
-            else if (!isSprinting && !crouched)
-            {
-                //WALKING
-                HeadBob(movementCounter, 0.035f, 0.035f);
-                movementCounter += Time.deltaTime * 3f;
-                weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 6f);
-            }
-            else if (crouched)
-            {
-                //CROUNCHING
-                HeadBob(movementCounter, 0.035f, 0.035f);
-                movementCounter += Time.deltaTime * 3f;
-                weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 6f);
-            }
-            else
-            {
-                //SPRINTING
-                HeadBob(movementCounter, 0.15f, 0.075f);
-                movementCounter += Time.deltaTime * 7f;
-                weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 10f);
-            }
-
-        if (currentSceneName == "Map")
-        {
-            //UI Refresh HealthBar
-            RefreshHealthBar();
+        if (ui_ammo != null)
             weapon.RefreshAmmo(ui_ammo);
-        }
     }
+
     void FixedUpdate()
     {
         if (!photonView.IsMine || chatManager.isInputtingChat) return;
@@ -238,88 +166,17 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         float t_hmove = Input.GetAxisRaw("Horizontal");
         float t_vmove = Input.GetAxisRaw("Vertical");
 
-        // Controls
-        bool sprint = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        bool jump = Input.GetKeyDown(KeyCode.Space);
-        //bool slide = Input.GetKey(KeyCode.LeftControl);
-
-        // States
-        bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
-        bool isJumping = jump && isGrounded;
-        bool isSprinting = sprint && t_vmove > 0 && isGrounded && !isJumping;
-        // bool isSliding = isSprinting && slide && !sliding;
-
         // Movement
         Vector3 t_direction = Vector3.zero;
         float t_adjustedSpeed = speed;
-        if (!sliding)
-        {
-            t_direction = new Vector3(t_hmove, 0, t_vmove);
-            t_direction.Normalize();
-            t_direction = transform.TransformDirection(t_direction);
-
-            if (isSprinting)
-            {
-                if (crouched) photonView.RPC("SetCrouch", RpcTarget.All, false);
-                t_adjustedSpeed *= sprintModifier;
-            }
-            else if (crouched)
-            {
-                t_adjustedSpeed *= crouchModifier;
-            }
-
-        }
-        else
-        {
-            t_direction = slide_dir;
-            t_adjustedSpeed *= slideModifier;
-            slide_time -= Time.deltaTime;
-            if (slide_time <= 0)
-            {
-                sliding = false;
-                weaponParentCurrentPos = weaponParentOrigin;
-
-            }
-        }
+ 
+        t_direction = new Vector3(t_hmove, 0, t_vmove);
+        t_direction.Normalize();
+        t_direction = transform.TransformDirection(t_direction);
 
         Vector3 t_targetVelocity = t_direction * t_adjustedSpeed * Time.deltaTime;
         t_targetVelocity.y = rig.velocity.y;
         rig.velocity = t_targetVelocity;
-
-        //Sliding
-        /*if (isSliding)
-        {
-            sliding = true;
-            slide_dir = t_direction;
-            slide_time = lenghtOfSlide;
-            weaponParentCurrentPos += Vector3.down * (slideAmount - crounchAmount);
-            if (!crouched) photonView.RPC("SetCrouch", RpcTarget.All, true);
-
-
-            //adjust camera
-
-        }*/
-
-        // Camera Stuff
-        if (sliding)
-        {
-            normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier * 1.15f, Time.deltaTime * 8f);
-            normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * 0.75f, Time.deltaTime * 6f);
-        }
-        else
-        {
-            //Sprinting
-            if (isSprinting)
-            {
-                normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.deltaTime * 8f);
-            }
-            else
-            {
-                normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.deltaTime * 8f);
-            }
-            if (crouched) normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * crounchAmount, Time.deltaTime * 6f);
-            else normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin, Time.deltaTime * 6f);
-        }
     }
 
     void RefreshMultiplayerState()
@@ -344,7 +201,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
     public void RefreshHealthBar()
     {
-        if (!photonView.IsMine)
+        if (!photonView.IsMine || ui_healthbar == null)
             return;
 
         float t_health_ratio = (float)current_health / (float)max_health;

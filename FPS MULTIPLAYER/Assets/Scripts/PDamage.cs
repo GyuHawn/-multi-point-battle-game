@@ -9,22 +9,10 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
     private PlayerMovement player;
     public float coolTime = 1f;
     private float lastDamageTime = 0f; // 마지막 데미지 처리 시간 저장용 변수
-    private string currentScene;
     
     private void Awake()
     {
-        // 현재 씬의 이름을 가져옵니다.
-        currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         player = GetComponent<PlayerMovement>();
-        // 현재 씬의 이름이 "Map"인 경우에만 PDamage 스크립트를 활성화합니다.
-        if (currentScene == "Map")
-        {
-            enabled = true;
-        }
-        else
-        {
-            enabled = false;
-        }
     }
     
 
@@ -104,25 +92,17 @@ public class PDamage : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // 로컬 플레이어의 데이터 전송
-            stream.SendNext(currentScene); // 현재 씬 이름도 함께 전송
-            if (currentScene == "Map")
-            {
-                stream.SendNext((int)player.current_health); // int로 형변환하여 전송
-            }
+
+            stream.SendNext((int)player.current_health); // int로 형변환하여 전송
+
         }
         else
         {
             // 원격 플레이어의 데이터 수신
             string receivedScene = (string)stream.ReceiveNext(); // 씬 이름 받아옴
+            player.current_health = (int)stream.ReceiveNext(); // int로 형변환하여 받아옴
+            player.RefreshHealthBar();
 
-            if (receivedScene == "Map" && currentScene == "Map")
-            {
-                player.current_health = (int)stream.ReceiveNext(); // int로 형변환하여 받아옴
-                player.RefreshHealthBar();
-            }
         }
     }
-
-
 }

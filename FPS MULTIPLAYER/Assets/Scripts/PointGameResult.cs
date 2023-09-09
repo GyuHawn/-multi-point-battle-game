@@ -22,19 +22,18 @@ public class PointGameResult : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (SceneManager.GetActiveScene().name == "Map")
+
+        foreach (var player in PhotonNetwork.PlayerList)
         {
-            foreach (var player in PhotonNetwork.PlayerList)
+            if (player.GetScore() > 5)
             {
-                if (player.GetScore() > 5)
-                {
-                    PlayerPrefs.SetString("PlayerData", GetPlayerData());
-                    SceneManager.LoadScene("Result");
-                    break;
-                }
+                PlayerPrefs.SetString("PlayerData", GetPlayerData());
+                SceneManager.LoadScene("Result");
+                break;
             }
         }
-        else if (SceneManager.GetActiveScene().name == "Result")
+
+        if (SceneManager.GetActiveScene().name == "Result")
         {
             countdownTimer -= Time.deltaTime; // 경과 시간 감소
 

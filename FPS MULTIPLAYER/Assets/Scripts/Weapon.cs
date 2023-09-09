@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Photon.Pun.Demo.PunBasics;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Weapon : MonoBehaviourPunCallbacks
 {
@@ -24,12 +25,10 @@ public class Weapon : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName != "Map")
-        {
-            enabled = false; // 스크립트 비활성화
-            return;
-        }
+
+        enabled = false; // 스크립트 비활성화
+        return;
+
         pDamage = FindObjectOfType<PDamage>();
         playerMove = FindObjectOfType<PlayerMovement>();
     }
@@ -204,14 +203,17 @@ public class Weapon : MonoBehaviourPunCallbacks
         currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[gunIndex].rebound; // 무기 반동값 지정 
     }
 
-    public void RefreshAmmo(Text p_text) // 현재 탄창 정보 UI 업데이트
+    public void RefreshAmmo(Text ammoText) // 현재 탄창 정보 UI 업데이트
     {
+        if (ammoText == null)
+        {
+            Debug.LogError("Text component is not assigned.");
+            return;
+        }
+
         int t_clip = loadout[gunIndex].GetClip(); // 탄창 정보를 변수에 저장
         int t_stache = loadout[gunIndex].GetStash();
-        
-        p_text.text = t_clip.ToString() + " / " + t_stache.ToString(); // 탄창 정보를 문자열로 표시
+
+        ammoText.text = t_clip.ToString() + " / " + t_stache.ToString(); // 탄창 정보를 문자열로 표시
     }
-
-
-   
 }
