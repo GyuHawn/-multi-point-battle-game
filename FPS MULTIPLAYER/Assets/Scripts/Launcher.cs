@@ -33,7 +33,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         if (isReady)
         {
             RoomOptions options = new RoomOptions();
-            options.MaxPlayers = 5;
+            options.MaxPlayers = 4;
             originalRoomName = createInput.text;  // 생성한 방의 이름 저장
             PhotonNetwork.CreateRoom(originalRoomName, options);
         }
@@ -58,8 +58,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("World");
-        //PhotonNetwork.LoadLevel("Map");
-        //PhotonNetwork.LoadLevel("Map2");
+
         if (playerName.text != "")
         {
             PhotonNetwork.NickName = playerName.text;

@@ -8,7 +8,6 @@ using Photon.Realtime;
 
 public class PointGamePortal : MonoBehaviourPunCallbacks
 {
-    public string sceneName;
     public Transform pointWaitSpawnPoints;
 
     void Start()
