@@ -11,8 +11,6 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 {
     PointSpwan pointspwan;
 
-    private string currentScene;
-
     public float max_health;
     public float current_health;
 
@@ -30,17 +28,6 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
     private void Awake()
     {
         pointspwan = FindObjectOfType<PointSpwan>();
-        // 현재 씬의 이름을 가져옵니다.
-        currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        // 현재 씬의 이름이 "Map"인 경우에만 PDamage 스크립트를 활성화합니다.
-        if (currentScene == "Map")
-        {
-            enabled = true;
-        }
-        else
-        {
-            enabled = false;
-        }
     }
 
     void Start()
@@ -100,7 +87,6 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 
             int scoreIncrease = isSpecialTarget ? 2 : 1;
 
-            // Send an event to update the score for this player only
             object[] data = new object[] { playerId, scoreIncrease };
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
             PhotonNetwork.RaiseEvent(1, data, raiseEventOptions, SendOptions.SendReliable);
@@ -124,29 +110,23 @@ public class PointObj : MonoBehaviourPunCallbacks, IPunObservable
 
             int scoreIncrease = isSpecialTarget ? 2 : 1;
 
-            // Send an event to update the score for this player only
             object[] data = new object[] { playerId, scoreIncrease };
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
             PhotonNetwork.RaiseEvent(1, data, raiseEventOptions, SendOptions.SendReliable);
         }
     }
-
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (currentScene == "Map")
+        if (stream.IsWriting)
         {
-            if (stream.IsWriting)
-            {
-                // 로컬 플레이어의 데이터 전송
-                stream.SendNext((int)current_health); // int로 형변환하여 전송
-            }
-            else
-            {
-                // 원격 플레이어의 데이터 수신
-                current_health = (int)stream.ReceiveNext(); // int로 형변환하여 받아옴
-            }
+            // 로컬 플레이어의 데이터 전송
+            stream.SendNext((int)current_health); // int로 형변환하여 전송
+        }
+        else
+        {
+            // 원격 플레이어의 데이터 수신
+            current_health = (int)stream.ReceiveNext(); // int로 형변환하여 받아옴
         }
     }
-
-    
 }

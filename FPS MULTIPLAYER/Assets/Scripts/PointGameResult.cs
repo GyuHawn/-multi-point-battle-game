@@ -10,6 +10,11 @@ using Photon.Realtime;
 
 public class PointGameResult : MonoBehaviourPunCallbacks
 {
+    private PlayerMovement playerMove;
+    private Weapon weapon;
+
+    public GameObject pointGamemanager;
+
     public TMP_Text gwinnerName;
     public TMP_Text gwinnerKill;
     public TMP_Text swinnerName;
@@ -19,6 +24,42 @@ public class PointGameResult : MonoBehaviourPunCallbacks
     public TMP_Text lobbyText;
 
     private float countdownTimer = 5f;
+
+    void Start()
+    {
+        playerMove = FindObjectOfType<PlayerMovement>();
+        weapon = FindObjectOfType<Weapon>();
+
+        if (SceneManager.GetActiveScene().name == "Result")
+        {
+            var data = PlayerPrefs.GetString("PlayerData").Split(',');
+            var scores = new List<(string name, int score)>();
+
+            foreach (var entry in data)
+            {
+                var parts = entry.Split(':');
+                scores.Add((parts[0], int.Parse(parts[1])));
+            }
+
+            scores.Sort((x, y) => y.score.CompareTo(x.score));
+
+            if (scores.Count >= 1)
+            {
+                gwinnerName.text = scores[0].name;
+                gwinnerKill.text = scores[0].score.ToString();
+            }
+            if (scores.Count >= 2)
+            {
+                swinnerName.text = scores[1].name;
+                swinnerKill.text = scores[1].score.ToString();
+            }
+            if (scores.Count >= 3)
+            {
+                bwinnerName.text = scores[2].name;
+                bwinnerKill.text = scores[2].score.ToString();
+            }
+        }
+    }
 
     void Update()
     {
@@ -58,40 +99,6 @@ public class PointGameResult : MonoBehaviourPunCallbacks
         return string.Join(",", data);
     }
 
-    void Start()
-    {
-        // 이 부분은 이전 코드와 동일합니다.
-        if (SceneManager.GetActiveScene().name == "Result")
-        {
-            var data = PlayerPrefs.GetString("PlayerData").Split(',');
-            var scores = new List<(string name, int score)>();
-
-            foreach (var entry in data)
-            {
-                var parts = entry.Split(':');
-                scores.Add((parts[0], int.Parse(parts[1])));
-            }
-
-            scores.Sort((x, y) => y.score.CompareTo(x.score));
-
-            if (scores.Count >= 1)
-            {
-                gwinnerName.text = scores[0].name;
-                gwinnerKill.text = scores[0].score.ToString();
-            }
-            if (scores.Count >= 2)
-            {
-                swinnerName.text = scores[1].name;
-                swinnerKill.text = scores[1].score.ToString();
-            }
-            if (scores.Count >= 3)
-            {
-                bwinnerName.text = scores[2].name;
-                bwinnerKill.text = scores[2].score.ToString();
-            }
-        }
-    }
-
     public void MoveLobby()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -112,6 +119,9 @@ public class PointGameResult : MonoBehaviourPunCallbacks
                 if (!string.IsNullOrEmpty(originalRoomName))  // 만약 원래의 방 이름이 유효하다면...
                     PhotonNetwork.JoinOrCreateRoom(originalRoomName, new RoomOptions { MaxPlayers = 5 }, TypedLobby.Default);  // 해당 이름으로 룸에 접속하거나 새로 생성하기
 
+                pointGamemanager.gameObject.SetActive(false);
+                playerMove.isPointGame = false;
+                weapon.isWeapon = false;
                 SceneManager.LoadScene("World");
             }
         }

@@ -591,6 +591,7 @@ MonoBehaviour:
   weaponParentCurrentPos: {x: 0, y: 0, z: 0}
   playerNameTextPrefab: {fileID: 9130839818570466205, guid: db064049534eda6449a0f1d10da50a6a,
     type: 3}
+  isPointGame: 0
 --- !u!114 &6865411409467959398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -626,6 +627,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2817
   isAiming: 0
+  isWeapon: 0
 --- !u!114 &4605259478306002894
 MonoBehaviour:
   m_ObjectHideFlags: 0

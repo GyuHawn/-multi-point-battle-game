@@ -20,6 +20,11 @@ public class MoveMap : MonoBehaviourPunCallbacks
     {
         if (moveMapPoints.Length > 0 && Manager.currentPlayer != null)
         {
+            if (mMenu != null)
+            {
+                mMenu.SetActive(false);
+            }
+
             Manager.currentPlayer.transform.position = moveMapPoints[0].position;
         }
     }
@@ -28,6 +33,11 @@ public class MoveMap : MonoBehaviourPunCallbacks
     {
         if (moveMapPoints.Length > 0 && Manager.currentPlayer != null)
         {
+            if (mMenu != null)
+            {
+                mMenu.SetActive(false);
+            }
+
             Manager.currentPlayer.transform.position = moveMapPoints[1].position;
         }
     }

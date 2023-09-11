@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class PointGameStart : MonoBehaviour
 {
+    private PlayerMovement playerMove;
+    private Weapon weapon;
+
+    public GameObject pointGamemanager;
     public GameObject waitFloor;
     public GameObject startUI;
     public GameObject pointGameUI;
@@ -17,7 +21,11 @@ public class PointGameStart : MonoBehaviour
     {
         startUI.gameObject.SetActive(false);
         pointGameUI.gameObject.SetActive(false);
+        pointGamemanager.gameObject.SetActive(false);
         startButton.onClick.AddListener(StartGame);
+
+        playerMove = FindObjectOfType<PlayerMovement>();
+        weapon = FindObjectOfType<Weapon>();
     }
 
     private void OnCollisionStay(Collision collision)
@@ -54,6 +62,10 @@ public class PointGameStart : MonoBehaviour
 
     private void RpcStartGame()
     {
+        pointGamemanager.gameObject.SetActive(true);
+        playerMove.isPointGame = true;
+        weapon.isWeapon = true;
+        
         List<Transform> availableSpawns = new List<Transform>(pointGameSpawnPoints);
 
         foreach (GameObject player in playersOnFloor)

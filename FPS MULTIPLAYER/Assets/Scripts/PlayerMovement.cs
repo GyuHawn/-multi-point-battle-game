@@ -51,9 +51,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     private Animator anim;
 
     private ChatManager chatManager;
+ 
 
     public TMP_Text playerNameTextPrefab;
     private TMP_Text playerNameTextInstance;
+
+    public bool isPointGame = false; // 포인트 게임에 들어왔을때
 
     #region Photon Callbacks
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -82,6 +85,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     {
         manager = GameObject.Find("MainWorldManager").GetComponent<Manager>();
         chatManager = GameObject.Find("ChatPanel").GetComponent<ChatManager>();
+        pointGameUI = GameObject.Find("PointGameUI");
 
         weapon = GetComponent<Weapon>();
         anim = GetComponent<Animator>();
@@ -106,13 +110,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
-            if (pointGameUI)
-            {
-                ui_healthbar = GameObject.Find("HUD/Health/bar").transform;
-                ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
-                RefreshHealthBar();
-            }
-
             // 로컬 플레이어인 경우 닉네임 설정
             playerNameTextInstance = Instantiate(playerNameTextPrefab, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
             playerNameTextInstance.text = PhotonNetwork.NickName; // 자신 이름
@@ -123,12 +120,24 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         anim.SetBool("Run", false);
     }
 
+    void InitializeUI()
+    {
+        ui_healthbar = GameObject.Find("HUD/Health/bar").transform;
+        ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
+        RefreshHealthBar();
+    }
+
     private void Update()
     {
         if (chatManager.isInputtingChat) { return; }
 
         if (!photonView.IsMine)
         {
+            if (pointGameUI && isPointGame)
+            {
+                InitializeUI();
+            }
+
             RefreshMultiplayerState();
             return;
         }
@@ -156,7 +165,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         RefreshHealthBar();
 
         if (ui_ammo != null)
+        {
             weapon.RefreshAmmo(ui_ammo);
+        }
     }
 
     void FixedUpdate()

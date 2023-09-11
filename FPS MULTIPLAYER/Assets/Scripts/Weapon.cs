@@ -23,17 +23,20 @@ public class Weapon : MonoBehaviourPunCallbacks
     private PDamage pDamage;
     private PlayerMovement playerMove;
 
+    public bool isWeapon = false;
+
     private void Awake()
     {
-
-        enabled = false; // 스크립트 비활성화
-        return;
-
         pDamage = FindObjectOfType<PDamage>();
         playerMove = FindObjectOfType<PlayerMovement>();
     }
 
     void Start()
+    {
+        Initialize();
+    }
+
+    public void Initialize()
     {
         foreach (Gun a in loadout) a.Initialize(); // 배열의 각 총 초기화
         Equip(0); // 초기총(1번) 장착
@@ -41,6 +44,11 @@ public class Weapon : MonoBehaviourPunCallbacks
 
     void Update()
     {
+        if (!isWeapon)
+        {
+            return;
+        }
+
         if (photonView.IsMine && Input.GetKeyDown(KeyCode.Alpha1)) // 1번 키로 총 장착
         {
             photonView.RPC("Equip", RpcTarget.All, 0);
@@ -213,6 +221,8 @@ public class Weapon : MonoBehaviourPunCallbacks
 
         int t_clip = loadout[gunIndex].GetClip(); // 탄창 정보를 변수에 저장
         int t_stache = loadout[gunIndex].GetStash();
+
+        Debug.Log($"Current gun index: {gunIndex}, Clip: {t_clip}, Stash: {t_stache}"); // 디버깅 로그
 
         ammoText.text = t_clip.ToString() + " / " + t_stache.ToString(); // 탄창 정보를 문자열로 표시
     }

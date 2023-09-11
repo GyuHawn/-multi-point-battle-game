@@ -6,7 +6,6 @@ using Photon.Pun;
 using ExitGames.Client.Photon;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
-using UnityEngine.SceneManagement;
 
 public class PointCount : MonoBehaviourPunCallbacks
 {
@@ -14,11 +13,10 @@ public class PointCount : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        if (SceneManager.GetActiveScene().name == "Map")
-        {
-            GameObject obj = GameObject.Find("KillCount");
-            killText = obj?.GetComponent<Text>();
-        }
+
+        GameObject obj = GameObject.Find("KillCount");
+        killText = obj?.GetComponent<Text>();
+
     }
 
 
@@ -53,7 +51,7 @@ public class PointCount : MonoBehaviourPunCallbacks
             int playerId = (int)data[0];
             int scoreIncrease = (int)data[1];
 
-            if (playerId == PhotonNetwork.LocalPlayer.ActorNumber && SceneManager.GetActiveScene().name == "Map")
+            if (playerId == PhotonNetwork.LocalPlayer.ActorNumber)
             {
                 PhotonNetwork.LocalPlayer.AddScore(scoreIncrease);
                 UpdateKillTextRPC(PhotonNetwork.LocalPlayer.GetScore());
@@ -64,20 +62,18 @@ public class PointCount : MonoBehaviourPunCallbacks
     [PunRPC]
     public void DecreaseKillTextRPC()
     {
-        if (SceneManager.GetActiveScene().name == "Map")
-        {
-            int score = int.Parse(killText.text);
-            score = Mathf.Max(0, score - 1);
-            killText.text = score.ToString();
-        }
+
+        int score = int.Parse(killText.text);
+        score = Mathf.Max(0, score - 1);
+        killText.text = score.ToString();
+
     }
 
     [PunRPC]
     public void UpdateKillTextRPC(int score)
     {
-        if (SceneManager.GetActiveScene().name == "Map")
-        {
-            killText.text = score.ToString();
-        }
+
+        killText.text = score.ToString();
+
     }
 }
