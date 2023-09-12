@@ -12,8 +12,9 @@ public class PointGameResult : MonoBehaviourPunCallbacks
 {
     private PlayerMovement playerMove;
     private Weapon weapon;
+    private PointGameStart pointGameStart;
 
-    public GameObject pointGamemanager;
+    public Button lobbyButton;
 
     public TMP_Text gwinnerName;
     public TMP_Text gwinnerKill;
@@ -21,7 +22,6 @@ public class PointGameResult : MonoBehaviourPunCallbacks
     public TMP_Text swinnerKill;
     public TMP_Text bwinnerName;
     public TMP_Text bwinnerKill;
-    public TMP_Text lobbyText;
 
     private float countdownTimer = 5f;
 
@@ -29,6 +29,12 @@ public class PointGameResult : MonoBehaviourPunCallbacks
     {
         playerMove = FindObjectOfType<PlayerMovement>();
         weapon = FindObjectOfType<Weapon>();
+        pointGameStart = FindObjectOfType<PointGameStart>();
+
+        if (SceneManager.GetActiveScene().name == "Result")
+        {
+            lobbyButton.onClick.AddListener(MoveLobby);
+        }
 
         if (SceneManager.GetActiveScene().name == "Result")
         {
@@ -73,19 +79,6 @@ public class PointGameResult : MonoBehaviourPunCallbacks
                 break;
             }
         }
-
-        if (SceneManager.GetActiveScene().name == "Result")
-        {
-            countdownTimer -= Time.deltaTime; // 경과 시간 감소
-
-            // 남은 시간 표시
-            lobbyText.text = "Go to Lobby   " + Mathf.CeilToInt(countdownTimer).ToString();
-
-            if (countdownTimer <= 0)
-            {
-                MoveLobby(); // 카운트다운 종료 후 LobbyCount 함수 호출
-            }
-        }
     }
 
     string GetPlayerData()
@@ -108,7 +101,7 @@ public class PointGameResult : MonoBehaviourPunCallbacks
             foreach (var player in PhotonNetwork.PlayerList)
                 player.SetScore(0);
 
-            // PhotonNetwork.LoadLevel("World");  
+            //PhotonNetwork.LoadLevel("World");  
 
             Launcher launcher = FindObjectOfType<Launcher>();  // Launcher 컴포넌트 찾기
 
@@ -119,7 +112,7 @@ public class PointGameResult : MonoBehaviourPunCallbacks
                 if (!string.IsNullOrEmpty(originalRoomName))  // 만약 원래의 방 이름이 유효하다면...
                     PhotonNetwork.JoinOrCreateRoom(originalRoomName, new RoomOptions { MaxPlayers = 5 }, TypedLobby.Default);  // 해당 이름으로 룸에 접속하거나 새로 생성하기
 
-                pointGamemanager.gameObject.SetActive(false);
+                pointGameStart.pointGamemanager.gameObject.SetActive(false);
                 playerMove.isPointGame = false;
                 weapon.isWeapon = false;
                 SceneManager.LoadScene("World");

@@ -222,8 +222,6 @@ public class Weapon : MonoBehaviourPunCallbacks
         int t_clip = loadout[gunIndex].GetClip(); // 탄창 정보를 변수에 저장
         int t_stache = loadout[gunIndex].GetStash();
 
-        Debug.Log($"Current gun index: {gunIndex}, Clip: {t_clip}, Stash: {t_stache}"); // 디버깅 로그
-
         ammoText.text = t_clip.ToString() + " / " + t_stache.ToString(); // 탄창 정보를 문자열로 표시
     }
 }

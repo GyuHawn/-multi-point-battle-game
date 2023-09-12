@@ -9,16 +9,29 @@ using Photon.Realtime;
 
 public class PointCount : MonoBehaviourPunCallbacks
 {
+    public PlayerMovement playerMove;
+
     public Text killText;
 
     void Start()
     {
+        playerMove = FindObjectOfType<PlayerMovement>();
+    }
 
-        GameObject obj = GameObject.Find("KillCount");
-        killText = obj?.GetComponent<Text>();
+    void Update()
+    {
+        if (playerMove.isPointGame)
+        {
+            FindKillCount();
+        }
 
     }
 
+    void FindKillCount()
+    {
+        GameObject obj = GameObject.Find("KillCount");
+        killText = obj?.GetComponent<Text>();
+    }
 
     private void OnDestroy()
     {

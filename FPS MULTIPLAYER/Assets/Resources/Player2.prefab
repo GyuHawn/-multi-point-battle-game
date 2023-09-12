@@ -640,6 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8149080a55ae84c907192e239536f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMove: {fileID: 0}
   killText: {fileID: 0}
 --- !u!114 &6670278928423929016
 MonoBehaviour:

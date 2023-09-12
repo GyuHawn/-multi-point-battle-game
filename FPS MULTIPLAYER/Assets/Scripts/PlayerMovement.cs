@@ -52,7 +52,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
     private ChatManager chatManager;
  
-
     public TMP_Text playerNameTextPrefab;
     private TMP_Text playerNameTextInstance;
 
@@ -85,7 +84,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     {
         manager = GameObject.Find("MainWorldManager").GetComponent<Manager>();
         chatManager = GameObject.Find("ChatPanel").GetComponent<ChatManager>();
-        pointGameUI = GameObject.Find("PointGameUI");
 
         weapon = GetComponent<Weapon>();
         anim = GetComponent<Animator>();
@@ -122,9 +120,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
     void InitializeUI()
     {
-        ui_healthbar = GameObject.Find("HUD/Health/bar").transform;
-        ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
-        RefreshHealthBar();
+        pointGameUI = GameObject.Find("PointGameUI");
+        if (pointGameUI != null)
+        {
+            ui_healthbar = pointGameUI.transform.Find("HUD/Health/bar").GetComponent<Transform>();
+            ui_ammo = pointGameUI.transform.Find("HUD/Ammo/Text").GetComponent<Text>();
+            RefreshHealthBar();
+        }
     }
 
     private void Update()
@@ -133,7 +135,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
         if (!photonView.IsMine)
         {
-            if (pointGameUI && isPointGame)
+            if (isPointGame)
             {
                 InitializeUI();
             }
@@ -162,7 +164,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         anim.SetBool("Run", t_hmove != 0 || t_vmove != 0);
 
 
-        RefreshHealthBar();
+        InitializeUI();
 
         if (ui_ammo != null)
         {
