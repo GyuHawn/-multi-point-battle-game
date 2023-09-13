@@ -11,10 +11,9 @@ using Photon.Realtime;
 public class PointGameResult : MonoBehaviourPunCallbacks
 {
     private PlayerMovement playerMove;
+    private Manager manager;
     private Weapon weapon;
     private PointGameStart pointGameStart;
-
-    public Button lobbyButton;
 
     public TMP_Text gwinnerName;
     public TMP_Text gwinnerKill;
@@ -28,13 +27,9 @@ public class PointGameResult : MonoBehaviourPunCallbacks
     void Start()
     {
         playerMove = FindObjectOfType<PlayerMovement>();
+        manager = FindObjectOfType<Manager>();
         weapon = FindObjectOfType<Weapon>();
         pointGameStart = FindObjectOfType<PointGameStart>();
-
-        if (SceneManager.GetActiveScene().name == "Result")
-        {
-            lobbyButton.onClick.AddListener(MoveLobby);
-        }
 
         if (SceneManager.GetActiveScene().name == "Result")
         {
@@ -64,6 +59,7 @@ public class PointGameResult : MonoBehaviourPunCallbacks
                 bwinnerName.text = scores[2].name;
                 bwinnerKill.text = scores[2].score.ToString();
             }
+            MoveLobby();
         }
     }
 
@@ -72,7 +68,7 @@ public class PointGameResult : MonoBehaviourPunCallbacks
 
         foreach (var player in PhotonNetwork.PlayerList)
         {
-            if (player.GetScore() > 5)
+            if (player.GetScore() > 1)
             {
                 PlayerPrefs.SetString("PlayerData", GetPlayerData());
                 SceneManager.LoadScene("Result");
@@ -94,29 +90,19 @@ public class PointGameResult : MonoBehaviourPunCallbacks
 
     public void MoveLobby()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PlayerPrefs.DeleteKey("PlayerData");
+        PlayerPrefs.DeleteKey("PlayerData");
 
-            foreach (var player in PhotonNetwork.PlayerList)
-                player.SetScore(0);
+        foreach (var player in PhotonNetwork.PlayerList)
+            player.SetScore(0);
 
-            //PhotonNetwork.LoadLevel("World");  
+        SceneManager.LoadScene("World");
 
-            Launcher launcher = FindObjectOfType<Launcher>();  // Launcher 컴포넌트 찾기
+        manager.RespawnPlayer(); // 부분 수정 필요
 
-            if (launcher != null)
-            {
-                string originalRoomName = launcher.originalRoomName;  // 원래의 방 이름 가져오기
+        playerMove.isPointGame = false;
 
-                if (!string.IsNullOrEmpty(originalRoomName))  // 만약 원래의 방 이름이 유효하다면...
-                    PhotonNetwork.JoinOrCreateRoom(originalRoomName, new RoomOptions { MaxPlayers = 5 }, TypedLobby.Default);  // 해당 이름으로 룸에 접속하거나 새로 생성하기
+        weapon.isWeapon = false;
 
-                pointGameStart.pointGamemanager.gameObject.SetActive(false);
-                playerMove.isPointGame = false;
-                weapon.isWeapon = false;
-                SceneManager.LoadScene("World");
-            }
-        }
+        pointGameStart.pointGamemanager.gameObject.SetActive(false);
     }
 }

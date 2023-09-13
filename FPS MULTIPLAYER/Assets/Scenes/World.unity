@@ -39517,7 +39517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1948981479
 Transform:
   m_ObjectHideFlags: 0
@@ -42398,14 +42398,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6534f336f5a0645aa470f7f995a40a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointGamemanager: {fileID: 2066951465}
   gwinnerName: {fileID: 0}
   gwinnerKill: {fileID: 0}
   swinnerName: {fileID: 0}
   swinnerKill: {fileID: 0}
   bwinnerName: {fileID: 0}
   bwinnerKill: {fileID: 0}
-  lobbyText: {fileID: 0}
 --- !u!114 &2066951468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42450,6 +42448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8149080a55ae84c907192e239536f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMove: {fileID: 0}
   killText: {fileID: 0}
 --- !u!1 &2068659470
 GameObject:

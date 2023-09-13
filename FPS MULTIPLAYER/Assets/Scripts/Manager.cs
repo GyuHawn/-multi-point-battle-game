@@ -75,4 +75,16 @@ public class Manager : MonoBehaviourPunCallbacks
         }
 
     }
+
+    public void RespawnPlayer()
+    {
+        if (mainWorldSpawnPoints.Length <= 0)
+        {
+            Debug.LogError("Spawn points are not set");
+            return;
+        }
+
+        Transform spawner = mainWorldSpawnPoints[Random.Range(0, mainWorldSpawnPoints.Length)];
+        currentPlayer.transform.position = spawner.position;
+    }
 }
