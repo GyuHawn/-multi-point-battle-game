@@ -23,6 +23,7 @@ public class Weapon : MonoBehaviourPunCallbacks
     private PDamage pDamage;
     private PlayerMovement playerMove;
 
+    private bool wasWeapon = false; // 이전 프레임에서의 isWeapon 상태를 저장할 변수
     public bool isWeapon = false;
 
     private void Awake()
@@ -34,6 +35,10 @@ public class Weapon : MonoBehaviourPunCallbacks
     void Start()
     {
         Initialize();
+        if (isWeapon)  // 만약 isWeapon 값이 true라면 기본 무기를 장착합니다.
+        {
+            Equip(0);
+        }
     }
 
     public void Initialize()
@@ -46,8 +51,19 @@ public class Weapon : MonoBehaviourPunCallbacks
     {
         if (!isWeapon)
         {
-            return;
+            if (currentWeapon != null)
+            {
+                // 총을 제거하는 코드 추가
+                photonView.RPC("Unequip", RpcTarget.All);
+            }
         }
+        else if (!wasWeapon && isWeapon)  // 이전에는 무기가 없었고 지금은 무기가 있는 경우
+        {
+            Equip(0);  // 기본적인 무기를 장착합니다.
+        }
+
+        wasWeapon = isWeapon;  // 현재의 isWeapon 상태를 저장합니다.
+    
 
         if (photonView.IsMine && Input.GetKeyDown(KeyCode.Alpha1)) // 1번 키로 총 장착
         {
@@ -132,6 +148,19 @@ public class Weapon : MonoBehaviourPunCallbacks
         t_newWeapon.GetComponent<Sway>().enabled = photonView.IsMine; // 총의 Sway 설정
 
         currentWeapon = t_newWeapon; // 현재의 총 상태를 새로운 총으로 변경
+    }
+
+    [PunRPC]
+    void Unequip() // 네트워크에서 총기 제거 처리
+    {
+        if (currentWeapon != null)
+        {
+            if (isReloading) // 재장전 멈춤
+                StopCoroutine("Reload"); // 코루틴 정지
+
+            Destroy(currentWeapon); // 현재 총 파괴
+            currentWeapon = null; // 현재 총 상태를 null로 변경
+        }
     }
 
     void Aim(bool p_isAiming) // 조준

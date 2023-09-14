@@ -822,7 +822,7 @@ GameObject:
   - component: {fileID: 897177044}
   - component: {fileID: 897177043}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: PointGameResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -845,6 +845,7 @@ RectTransform:
   - {fileID: 1371617125}
   - {fileID: 1800316103}
   - {fileID: 2038697341}
+  - {fileID: 1812584766}
   m_Father: {fileID: 898571799}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1964,12 +1965,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1812584764}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 559.9601, y: 366.97043, z: 12.899536}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -74.79992, y: 37.590885, z: 12.899536}
+  m_LocalScale: {x: 0.95238096, y: 0.95238096, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 897177042}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1812584767
 MonoBehaviour:
@@ -2666,4 +2667,3 @@ SceneRoots:
   - {fileID: 1386500933}
   - {fileID: 898571799}
   - {fileID: 1855433492}
-  - {fileID: 1812584766}

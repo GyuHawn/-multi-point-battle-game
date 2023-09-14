@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     public TMP_Text playerNameTextPrefab;
     private TMP_Text playerNameTextInstance;
 
-    public bool isPointGame = false; // 포인트 게임에 들어왔을때
+    public bool isPointGame; // 포인트 게임에 들어왔을때
 
     #region Photon Callbacks
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -84,9 +84,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     {
         manager = GameObject.Find("MainWorldManager").GetComponent<Manager>();
         chatManager = GameObject.Find("ChatPanel").GetComponent<ChatManager>();
-
         weapon = GetComponent<Weapon>();
         anim = GetComponent<Animator>();
+        isPointGame = false;
         current_health = max_health;
         cameraParent.SetActive(photonView.IsMine);
         if (!photonView.IsMine) gameObject.layer = 9;
