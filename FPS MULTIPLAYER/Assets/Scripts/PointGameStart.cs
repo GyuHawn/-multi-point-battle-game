@@ -8,6 +8,7 @@ public class PointGameStart : MonoBehaviour
     private PlayerMovement playerMove;
     private Weapon weapon;
 
+    public GameObject moveMap;
     public GameObject pointGamemanager;
     public GameObject waitFloor;
     public GameObject startUI;
@@ -62,6 +63,7 @@ public class PointGameStart : MonoBehaviour
 
     private void RpcStartGame()
     {
+        moveMap.gameObject.SetActive(false);
         pointGamemanager.gameObject.SetActive(true);
         playerMove.isPointGame = true;
         weapon.isWeapon = true;

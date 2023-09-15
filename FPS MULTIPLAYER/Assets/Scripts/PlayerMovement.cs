@@ -51,9 +51,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     private Animator anim;
 
     private ChatManager chatManager;
- 
-    public TMP_Text playerNameTextPrefab;
-    private TMP_Text playerNameTextInstance;
 
     public bool isPointGame; // 포인트 게임에 들어왔을때
 
@@ -71,10 +68,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             transform.position = (Vector3)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
-                                                              
-            if (!photonView.IsMine && playerNameTextInstance != null)
-                playerNameTextInstance.text = (string)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();                                                           
         }
     }
 
@@ -106,15 +100,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         weaponParentOrigin = weaponParent.localPosition;
         weaponParentCurrentPos = weaponParentOrigin;
 
-        if (photonView.IsMine)
-        {
-            // 로컬 플레이어인 경우 닉네임 설정
-            playerNameTextInstance = Instantiate(playerNameTextPrefab, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
-            playerNameTextInstance.text = PhotonNetwork.NickName; // 자신 이름
-            playerNameTextInstance.text = photonView.Owner.NickName; // 로컬 플레이어 이름
-
-        }
-
         anim.SetBool("Run", false);
     }
 
@@ -142,19 +127,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
             RefreshMultiplayerState();
             return;
-        }
-
-        if (playerNameTextInstance != null)
-        {
-            // 텍스트 중앙 정렬
-            playerNameTextInstance.alignment = TextAlignmentOptions.Center;
-            // 텍스트 사이즈
-            playerNameTextInstance.fontSize = 5;
-            // 이름 태그가 항상 캐릭터 위에 위치하도록 위치를 조정합니다.
-            playerNameTextInstance.transform.position = transform.position + new Vector3(0f, 3f, 0f);
-
-            // 플레이어와 같은 방향으로 회전
-            playerNameTextInstance.transform.rotation = transform.rotation;
         }
 
         // Axis

@@ -26,8 +26,6 @@ public class PointGameResult : MonoBehaviourPunCallbacks
 
     public bool isResult = false;
 
-    private float countdownTimer = 5f;
-
     void Start()
     {
         playerMove = FindObjectOfType<PlayerMovement>();
@@ -36,17 +34,34 @@ public class PointGameResult : MonoBehaviourPunCallbacks
         pointGameStart = FindObjectOfType<PointGameStart>();
 
         var data = PlayerPrefs.GetString("PlayerData").Split(',');
+    }
+
+    void Update()
+    {
+        if (!isResult)
+        {
+            foreach (var player in PhotonNetwork.PlayerList)
+            {
+                if (player.GetScore() > 3)
+                {
+                    PlayerPrefs.SetString("PlayerData", GetPlayerData());
+                    isResult = true;
+                    StartCoroutine(go());
+                    break;
+                }
+            }
+        }
+
+        UpdateScores();
+    }
+
+    void UpdateScores()
+    {
         var scores = new List<(string name, int score)>();
 
-        foreach (var entry in data)
+        foreach (var player in PhotonNetwork.PlayerList)
         {
-            var parts = entry.Split(':');
-            if (parts.Length < 2)
-            {
-                Debug.LogWarning("Invalid player data: " + entry);
-                continue;
-            }
-            scores.Add((parts[0], int.Parse(parts[1]))); //¿¡·¯
+            scores.Add((player.NickName, player.GetScore()));
         }
 
         scores.Sort((x, y) => y.score.CompareTo(x.score));
@@ -68,21 +83,6 @@ public class PointGameResult : MonoBehaviourPunCallbacks
         }
     }
 
-    void Update()
-    {
-        foreach (var player in PhotonNetwork.PlayerList)
-        {
-            if (player.GetScore() > 1 && !isResult)
-            {
-                PlayerPrefs.SetString("PlayerData", GetPlayerData());
-                isResult = true;
-                StartCoroutine(go());
-                break;
-            }
-        }
-    }
-
-
     string GetPlayerData()
     {
         var data = new List<string>();
@@ -94,16 +94,6 @@ public class PointGameResult : MonoBehaviourPunCallbacks
         return string.Join(",", data);
     }
 
-    public void MoveLobby()
-    {
-        PlayerPrefs.DeleteKey("PlayerData");
-
-        foreach (var player in PhotonNetwork.PlayerList)
-        {
-            player.SetScore(0);
-        }
-    }
-
     IEnumerator go()
     {
         manager.RespawnPlayer();
@@ -112,10 +102,27 @@ public class PointGameResult : MonoBehaviourPunCallbacks
         pointGameStart.pointGameUI.gameObject.SetActive(false);
         pointGameStart.pointGamemanager.gameObject.SetActive(false);
         resultBord.SetActive(true);
+        pointGameStart.moveMap.SetActive(true);
+
         yield return new WaitForSeconds(2f);
-        MoveLobby();
-        yield return new WaitForSeconds(2f);
+
         resultBord.SetActive(false);
+
+        yield return new WaitForSeconds(2f);
+
+        deleteDate();
+    }
+
+    public void deleteDate()
+    {
+        PlayerPrefs.DeleteKey("PlayerData");
+
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            player.SetScore(0);
+        }
+
         isResult = false;
     }
 }
+

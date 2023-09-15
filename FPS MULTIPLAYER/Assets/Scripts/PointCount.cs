@@ -75,11 +75,9 @@ public class PointCount : MonoBehaviourPunCallbacks
     [PunRPC]
     public void DecreaseKillTextRPC()
     {
-
         int score = int.Parse(killText.text);
         score = Mathf.Max(0, score - 1);
         killText.text = score.ToString();
-
     }
 
     [PunRPC]
