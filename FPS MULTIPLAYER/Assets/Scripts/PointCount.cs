@@ -18,19 +18,18 @@ public class PointCount : MonoBehaviourPunCallbacks
         playerMove = FindObjectOfType<PlayerMovement>();
     }
 
+
     void Update()
     {
         if (playerMove.isPointGame)
         {
-            FindKillCount();
+            if (killText == null)
+            {
+                GameObject obj = GameObject.Find("KillCount");
+                killText = obj?.GetComponent<Text>();
+            }
         }
 
-    }
-
-    void FindKillCount()
-    {
-        GameObject obj = GameObject.Find("KillCount");
-        killText = obj?.GetComponent<Text>();
     }
 
     private void OnDestroy()

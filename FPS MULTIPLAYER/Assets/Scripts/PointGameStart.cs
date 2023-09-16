@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class PointGameStart : MonoBehaviour
+public class PointGameStart : MonoBehaviourPunCallbacks
 {
     private PlayerMovement playerMove;
     private Weapon weapon;
@@ -33,12 +34,17 @@ public class PointGameStart : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            if (!playersOnFloor.Contains(collision.gameObject))
-            {
-                playersOnFloor.Add(collision.gameObject);
-            }
+            PhotonView pv = collision.gameObject.GetComponent<PhotonView>();
 
-            startUI.gameObject.SetActive(true);
+            if (pv != null && pv.IsMine)
+            {
+                if (!playersOnFloor.Contains(collision.gameObject))
+                {
+                    playersOnFloor.Add(collision.gameObject);
+                }
+
+                startUI.gameObject.SetActive(true);
+            }
         }
     }
 
