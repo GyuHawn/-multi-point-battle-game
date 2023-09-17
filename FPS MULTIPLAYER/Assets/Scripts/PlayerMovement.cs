@@ -45,6 +45,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     private Vector3 slide_dir;
     private Vector3 targetWeaponBobPosition;
 
+    public Text killText;
+
     private Weapon weapon;
     private float aimAngle;
 
@@ -93,6 +95,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
             gameObject.layer = 9;
             standingCollider.layer = 9;
             crouchingCollider.layer = 9;
+        }
+        else if (photonView.IsMine)
+        {
+            GameObject obj = GameObject.Find("KillCount");
+            killText = obj?.GetComponent<Text>();
         }
 
         // Camera.main.enabled = false;

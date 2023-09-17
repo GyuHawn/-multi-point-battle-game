@@ -18,20 +18,6 @@ public class PointCount : MonoBehaviourPunCallbacks
         playerMove = FindObjectOfType<PlayerMovement>();
     }
 
-
-    void Update()
-    {
-        if (playerMove.isPointGame)
-        {
-            if (killText == null)
-            {
-                GameObject obj = GameObject.Find("KillCount");
-                killText = obj?.GetComponent<Text>();
-            }
-        }
-
-    }
-
     private void OnDestroy()
     {
         if (PhotonNetwork.IsConnected)
@@ -83,7 +69,10 @@ public class PointCount : MonoBehaviourPunCallbacks
     public void UpdateKillTextRPC(int score)
     {
 
-        killText.text = score.ToString();
+        if (playerMove.killText != null)
+        {
+            playerMove.killText.text = score.ToString();
+        }
 
     }
 }

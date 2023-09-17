@@ -588,6 +588,8 @@ MonoBehaviour:
   manager: {fileID: 0}
   pointGameUI: {fileID: 0}
   weaponParentCurrentPos: {x: 0, y: 0, z: 0}
+  killText: {fileID: 9176808082753962984, guid: 5dd8512b58ddaa744afd510acc9c1176,
+    type: 3}
   isPointGame: 0
 --- !u!114 &6865411409467959398
 MonoBehaviour:
