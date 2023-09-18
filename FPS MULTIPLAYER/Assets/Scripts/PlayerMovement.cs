@@ -9,13 +9,7 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float speed;
-    public float sprintModifier = 2;
-    public float jumpForce;
     public float max_health;
-    public float lenghtOfSlide;
-    public float slideModifier;
-    public float crouchModifier;
-    public float slideAmount;
     public float crounchAmount;
     public LayerMask ground;
     public Transform groundDetector;
@@ -26,11 +20,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     public Camera normalCam;
     public float current_health;
     public Manager manager;
-    private float slide_time;
-    private float movementCounter;
-    private float idleCounter;
     private float baseFOV;
-    private float sprintFOVModifier = 1.5f;
     private bool crouched;
     private bool sliding;
     private Rigidbody rig;
@@ -42,7 +32,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     public Vector3 weaponParentCurrentPos;
     private Vector3 origin;
     private Vector3 weaponParentOrigin;
-    private Vector3 slide_dir;
     private Vector3 targetWeaponBobPosition;
 
     public Text killText;

@@ -551,8 +551,8 @@ MonoBehaviour:
   player: {fileID: 373325453180476069}
   cams: {fileID: 2451679996499670900}
   weapon: {fileID: 3610286275197566788}
-  xSensitivity: 200
-  ySensitivity: 200
+  xSensitivity: 50
+  ySensitivity: 50
   maxAngle: 60
 --- !u!114 &594096352367664008
 MonoBehaviour:
@@ -567,13 +567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 500
-  sprintModifier: 2
-  jumpForce: 400
   max_health: 1000
-  lenghtOfSlide: 3
-  slideModifier: 2.5
-  crouchModifier: 0.5
-  slideAmount: 0.75
   crounchAmount: 0.5
   ground:
     serializedVersion: 2
