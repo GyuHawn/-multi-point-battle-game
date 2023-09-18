@@ -237,6 +237,7 @@ GameObject:
   - component: {fileID: 3355012119039719741}
   - component: {fileID: 673264075570260097}
   - component: {fileID: 4983539486807496335}
+  - component: {fileID: -1122560926674917915}
   - component: {fileID: 7073240196097498215}
   - component: {fileID: 3102085401066605105}
   m_Layer: 0
@@ -352,8 +353,8 @@ MonoBehaviour:
   player: {fileID: 3878542046975611203}
   cams: {fileID: 821670143658374653}
   weapon: {fileID: 7047199244695182459}
-  xSensitivity: 200
-  ySensitivity: 200
+  xSensitivity: 50
+  ySensitivity: 50
   maxAngle: 60
 --- !u!114 &3355012119039719741
 MonoBehaviour:
@@ -368,13 +369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 500
-  sprintModifier: 2
-  jumpForce: 400
   max_health: 1000
-  lenghtOfSlide: 3
-  slideModifier: 2.5
-  crouchModifier: 0.5
-  slideAmount: 0.75
   crounchAmount: 0.5
   ground:
     serializedVersion: 2
@@ -387,9 +382,10 @@ MonoBehaviour:
   normalCam: {fileID: 3337616009049775630}
   current_health: 0
   manager: {fileID: 0}
+  pointGameUI: {fileID: 0}
   weaponParentCurrentPos: {x: 0, y: 0, z: 0}
-  Press_Key: {fileID: 2800424099037391931, guid: ceb1a32a938b2d14aaf881c8ee858f5b,
-    type: 3}
+  killText: {fileID: 0}
+  isPointGame: 0
 --- !u!114 &673264075570260097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +421,21 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2817
   isAiming: 0
+  isWeapon: 0
+--- !u!114 &-1122560926674917915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2325731202416150145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8149080a55ae84c907192e239536f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMove: {fileID: 0}
+  killText: {fileID: 0}
 --- !u!114 &7073240196097498215
 MonoBehaviour:
   m_ObjectHideFlags: 0
